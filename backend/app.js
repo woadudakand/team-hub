@@ -13,6 +13,27 @@ module.exports = async function (fastify, opts) {
     });
     // Place here your custom code!
 
+    // Register body parser for JSON requests
+    fastify.addContentTypeParser(
+        'application/json',
+        { parseAs: 'string' },
+        function (req, body, done) {
+            try {
+                const json = JSON.parse(body);
+                done(null, json);
+            } catch (err) {
+                err.statusCode = 400;
+                done(err, undefined);
+            }
+        }
+    );
+
+    // Register multipart support for file uploads and form-data with fields attached to body
+    fastify.register(require('@fastify/multipart'), { attachFieldsToBody: true });
+
+    // Register mailer plugin for sending emails
+    fastify.decorate('sendMail', require('./plugins/mailer').sendMail);
+
     // Do not touch the following lines
 
     // This loads all plugins defined in plugins

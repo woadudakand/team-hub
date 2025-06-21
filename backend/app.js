@@ -36,6 +36,12 @@ module.exports = async function (fastify, opts) {
     // Register mailer plugin for sending emails
     fastify.decorate('sendMail', require('./plugins/mailer').sendMail);
 
+    // Register CORS for frontend origin
+    fastify.register(require('@fastify/cors'), {
+        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+        credentials: true,
+    });
+
     // Do not touch the following lines
 
     // This loads all plugins defined in plugins

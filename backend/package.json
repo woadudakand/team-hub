@@ -1,5 +1,5 @@
 {
-    "name": "backend",
+    "name": "team-hub-backend",
     "version": "1.0.0",
     "description": "This project was bootstrapped with Fastify-CLI.",
     "main": "app.js",
@@ -17,6 +17,7 @@
     "license": "ISC",
     "dependencies": {
         "@fastify/autoload": "^6.3.1",
+        "@fastify/cors": "^11.0.1",
         "@fastify/jwt": "^9.1.0",
         "@fastify/multipart": "^9.0.3",
         "@fastify/postgres": "^6.0.2",

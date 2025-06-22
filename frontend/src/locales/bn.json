@@ -1,0 +1,22 @@
+{
+  "welcome": "স্বাগতম",
+  "dashboard": "ড্যাশবোর্ড",
+  "signin": "সাইন ইন",
+  "signup": "সাইন আপ",
+  "signout": "সাইন আউট",
+  "forgotPassword": "পাসওয়ার্ড ভুলে গেছেন",
+  "resetPassword": "পাসওয়ার্ড রিসেট করুন",
+  "language": "ভাষা",
+  "switchTo": "সুইচ করুন",
+  "topbar": "টপবার",
+  "sidemenu": "সাইডমেনু",
+  "handbook": "হ্যান্ডবুক",
+  "announcements": "ঘোষণা",
+  "hrAdmin": "এইচআর ও অ্যাডমিন",
+  "evaluation": "মূল্যায়ন",
+  "events": "ইভেন্টস",
+  "projects": "প্রজেক্টস",
+  "team": "টিম",
+  "subitem1": "সাবআইটেম ১",
+  "subitem2": "সাবআইটেম ২"
+}

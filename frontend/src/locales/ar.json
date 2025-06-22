@@ -1,0 +1,22 @@
+{
+  "welcome": "أهلا بك",
+  "dashboard": "لوحة القيادة",
+  "signin": "تسجيل الدخول",
+  "signup": "اشتراك",
+  "signout": "تسجيل خروج",
+  "forgotPassword": "هل نسيت كلمة المرور",
+  "resetPassword": "إعادة تعيين كلمة المرور",
+  "language": "اللغة",
+  "switchTo": "التبديل إلى",
+  "topbar": "الشريط العلوي",
+  "sidemenu": "القائمة الجانبية",
+  "handbook": "كتيب",
+  "announcements": "إعلانات",
+  "hrAdmin": "الموارد البشرية والإدارة",
+  "evaluation": "تقييم",
+  "events": "الأحداث",
+  "projects": "المشاريع",
+  "team": "الفريق",
+  "subitem1": "عنصر فرعي 1",
+  "subitem2": "عنصر فرعي 2"
+}

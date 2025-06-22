@@ -3,8 +3,23 @@ import { AppBar, Toolbar, Typography, IconButton, Box, Avatar, Badge } from '@mu
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MailIcon from '@mui/icons-material/Mail';
+import { useTranslation } from 'react-i18next';
 
 export default function Topbar({ onMenuToggle, user }) {
+  const { i18n } = useTranslation();
+  const languages = [
+    { code: 'en', label: 'EN' },
+    { code: 'bn', label: 'BN' },
+    { code: 'es', label: 'ES' },
+    { code: 'fr', label: 'FR' },
+    { code: 'de', label: 'DE' },
+    { code: 'hi', label: 'HI' },
+    { code: 'ar', label: 'AR' },
+    { code: 'ru', label: 'RU' },
+    { code: 'zh', label: 'ZH' },
+    { code: 'pt', label: 'PT' },
+  ];
+
   return (
     <AppBar position="fixed" color="inherit" elevation={1} sx={{ zIndex: 1201 }}>
       <Toolbar>
@@ -23,6 +38,18 @@ export default function Topbar({ onMenuToggle, user }) {
         <IconButton color="inherit">
           <MailIcon />
         </IconButton>
+        {/* Language Switcher */}
+        <Box ml={2} display="flex" alignItems="center">
+          <select
+            value={i18n.language}
+            onChange={e => i18n.changeLanguage(e.target.value)}
+            style={{ padding: '4px 8px', borderRadius: 4, border: '1px solid #ccc', marginRight: 16 }}
+          >
+            {languages.map(lang => (
+              <option key={lang.code} value={lang.code}>{lang.label}</option>
+            ))}
+          </select>
+        </Box>
         <Box ml={2} display="flex" alignItems="center">
           <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', mr: 1 }}>
             {user?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || '_'}

@@ -1,0 +1,22 @@
+{
+  "welcome": "स्वागत है",
+  "dashboard": "डैशबोर्ड",
+  "signin": "साइन इन करें",
+  "signup": "साइन अप करें",
+  "signout": "साइन आउट",
+  "forgotPassword": "पासवर्ड भूल गए",
+  "resetPassword": "पासवर्ड रीसेट करें",
+  "language": "भाषा",
+  "switchTo": "पर स्विच करें",
+  "topbar": "टॉपबार",
+  "sidemenu": "साइडमेन्यू",
+  "handbook": "हैंडबुक",
+  "announcements": "घोषणाएँ",
+  "hrAdmin": "एचआर और एडमिन",
+  "evaluation": "मूल्यांकन",
+  "events": "इवेंट्स",
+  "projects": "प्रोजेक्ट्स",
+  "team": "टीम",
+  "subitem1": "उप-आइटम 1",
+  "subitem2": "उप-आइटम 2"
+}

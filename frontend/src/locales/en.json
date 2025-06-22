@@ -1,0 +1,22 @@
+{
+  "welcome": "Welcome",
+  "dashboard": "Dashboard",
+  "signin": "Sign In",
+  "signup": "Sign Up",
+  "signout": "Sign Out",
+  "forgotPassword": "Forgot Password",
+  "resetPassword": "Reset Password",
+  "language": "Language",
+  "switchTo": "Switch to",
+  "topbar": "Topbar",
+  "sidemenu": "Sidemenu",
+  "handbook": "Handbook",
+  "announcements": "Announcements",
+  "hrAdmin": "HR & Admin",
+  "evaluation": "Evaluation",
+  "events": "Events",
+  "projects": "Projects",
+  "team": "Team",
+  "subitem1": "Subitem 1",
+  "subitem2": "Subitem 2"
+}

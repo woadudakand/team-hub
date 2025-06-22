@@ -1,0 +1,22 @@
+{
+  "welcome": "Bem-vindo",
+  "dashboard": "Painel de controle",
+  "signin": "Entrar",
+  "signup": "Inscrever-se",
+  "signout": "Sair",
+  "forgotPassword": "Esqueceu a senha",
+  "resetPassword": "Redefinir senha",
+  "language": "Idioma",
+  "switchTo": "Mudar para",
+  "topbar": "Barra superior",
+  "sidemenu": "Menu lateral",
+  "handbook": "Manual",
+  "announcements": "Anúncios",
+  "hrAdmin": "RH & Admin",
+  "evaluation": "Avaliação",
+  "events": "Eventos",
+  "projects": "Projetos",
+  "team": "Equipe",
+  "subitem1": "Subitem 1",
+  "subitem2": "Subitem 2"
+}

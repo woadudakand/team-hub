@@ -1,0 +1,22 @@
+{
+  "welcome": "欢迎",
+  "dashboard": "仪表板",
+  "signin": "登录",
+  "signup": "注册",
+  "signout": "登出",
+  "forgotPassword": "忘记密码",
+  "resetPassword": "重置密码",
+  "language": "语言",
+  "switchTo": "切换到",
+  "topbar": "顶部栏",
+  "sidemenu": "侧边菜单",
+  "handbook": "手册",
+  "announcements": "公告",
+  "hrAdmin": "人力资源与行政",
+  "evaluation": "评估",
+  "events": "事件",
+  "projects": "项目",
+  "team": "团队",
+  "subitem1": "子项 1",
+  "subitem2": "子项 2"
+}

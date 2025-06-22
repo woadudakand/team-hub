@@ -1,0 +1,22 @@
+{
+  "welcome": "Willkommen",
+  "dashboard": "Instrumententafel",
+  "signin": "Anmelden",
+  "signup": "Registrieren",
+  "signout": "Abmelden",
+  "forgotPassword": "Passwort vergessen",
+  "resetPassword": "Passwort zurücksetzen",
+  "language": "Sprache",
+  "switchTo": "Wechseln zu",
+  "topbar": "Oberleiste",
+  "sidemenu": "Seitenmenü",
+  "handbook": "Handbuch",
+  "announcements": "Ankündigungen",
+  "hrAdmin": "HR & Admin",
+  "evaluation": "Bewertung",
+  "events": "Veranstaltungen",
+  "projects": "Projekte",
+  "team": "Team",
+  "subitem1": "Unterpunkt 1",
+  "subitem2": "Unterpunkt 2"
+}

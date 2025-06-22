@@ -12,27 +12,29 @@ import PowerOffIcon from '@mui/icons-material/Logout';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const menu = [
-  { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-  { label: 'Handbook', icon: <BookIcon /> },
-  { label: 'Announcements', icon: <NotificationsIcon /> },
+  { label: 'dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+  { label: 'handbook', icon: <BookIcon /> },
+  { label: 'announcements', icon: <NotificationsIcon /> },
   {
-    label: 'HR & Admin', icon: <AdminPanelSettingsIcon />, children: [
-      { label: 'Subitem 1' }, { label: 'Subitem 2' }
+    label: 'hrAdmin', icon: <AdminPanelSettingsIcon />, children: [
+      { label: 'subitem1' }, { label: 'subitem2' }
     ]
   },
-  { label: 'Evaluation', icon: <AssessmentIcon /> },
-  { label: 'Events', icon: <EventIcon /> },
-  { label: 'Projects', icon: <FolderIcon /> },
+  { label: 'evaluation', icon: <AssessmentIcon /> },
+  { label: 'events', icon: <EventIcon /> },
+  { label: 'projects', icon: <FolderIcon /> },
   {
-    label: 'Team', icon: <GroupIcon />, children: [
-      { label: 'Subitem 1' }, { label: 'Subitem 2' }
+    label: 'team', icon: <GroupIcon />, children: [
+      { label: 'subitem1' }, { label: 'subitem2' }
     ]
   }
 ];
 
 export default function SideMenu({ open, onClose, onSignout }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [openMenus, setOpenMenus] = React.useState({});
 
@@ -55,7 +57,7 @@ export default function SideMenu({ open, onClose, onSignout }) {
               else if (item.path) navigate(item.path);
             }}>
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} />
+              <ListItemText primary={t(item.label)} />
               {item.badge && <Badge color="error" badgeContent={item.badge} sx={{ ml: 1 }} />}
               {item.children && (openMenus[item.label] ? <ExpandLess /> : <ExpandMore />)}
             </ListItem>
@@ -64,7 +66,7 @@ export default function SideMenu({ open, onClose, onSignout }) {
                 <List component="div" disablePadding>
                   {item.children.map((sub, i) => (
                     <ListItem button key={sub.label} sx={{ pl: 4 }}>
-                      <ListItemText primary={sub.label} />
+                      <ListItemText primary={t(sub.label)} />
                     </ListItem>
                   ))}
                 </List>
@@ -75,7 +77,7 @@ export default function SideMenu({ open, onClose, onSignout }) {
 
         <ListItem button onClick={onSignout}>
             <ListItemIcon><PowerOffIcon /></ListItemIcon>
-            <ListItemText primary="Signout" />
+            <ListItemText primary={t('signout')} />
         </ListItem>
       </List>
     </Drawer>

@@ -8,11 +8,16 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import DashboardPage from './pages/DashboardPage'
 import ThemeSettingsDashboard from './pages/ThemeSettingsDashboard'
+import ProfilePage from './pages/ProfilePage'
+import GeneralInfoTab from './pages/GeneralInfoTab'
+import JobInfoTab from './pages/JobInfoTab'
+import AccountInfoTab from './pages/AccountInfoTab'
 import { useSelector } from 'react-redux'
 import './App.css'
 import AuthLoader from './features/auth/AuthLoader'
 import ThemeMetaSync from './features/theme/ThemeMetaSync'
 import { fetchThemeSettings } from './features/theme/themeSlice'
+import DashboardLayout from './layout/DashboardLayout'
 
 function PrivateRoute({ children }) {
   const token = useSelector((state) => state.auth.token)
@@ -35,22 +40,30 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
-            path="/dashboard"
+            path="/"
             element={
               <PrivateRoute>
-                <DashboardPage />
+                <DashboardLayout />
               </PrivateRoute>
             }
-          />
-          <Route
-            path="/theme-settings"
-            element={
-              <PrivateRoute>
-                <ThemeSettingsDashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          >
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="theme-settings" element={<ThemeSettingsDashboard />} />
+            <Route path="profile/:userId" element={<ProfilePage />}>
+              <Route path="general-info" element={<GeneralInfoTab />} />
+              <Route path="job-info" element={<JobInfoTab />} />
+              <Route path="account-info" element={<AccountInfoTab />} />
+              <Route index element={<Navigate to="general-info" />} />
+            </Route>
+            <Route path="profile" element={<ProfilePage />}>
+              <Route path="general-info" element={<GeneralInfoTab />} />
+              <Route path="job-info" element={<JobInfoTab />} />
+              <Route path="account-info" element={<AccountInfoTab />} />
+              <Route index element={<Navigate to="general-info" />} />
+            </Route>
+            <Route index element={<Navigate to="dashboard" />} />
+            <Route path="*" element={<Navigate to="dashboard" />} />
+          </Route>
         </Routes>
       </AuthLoader>
     </BrowserRouter>

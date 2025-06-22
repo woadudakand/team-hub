@@ -38,6 +38,7 @@ module.exports = async function (fastify, opts) {
     fastify.register(require('@fastify/cors'), {
         origin: process.env.FRONTEND_URL || 'http://localhost:5173',
         credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     });
 
     // Do not touch the following lines

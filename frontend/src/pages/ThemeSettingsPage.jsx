@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateThemeSettings, setThemeModeDirection } from '../features/theme/themeSlice';
 import { Box, Typography, TextField, Button, Switch, Select, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import { DataService as axios } from '../utility/dataService';
 import Loader from '../components/Loader';
 
 export default function ThemeSettingsPage() {

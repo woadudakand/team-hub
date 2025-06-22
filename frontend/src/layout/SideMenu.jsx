@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 const menu = [
   { label: 'dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+  { label: 'profile', icon: <AdminPanelSettingsIcon />, path: '/profile' },
   { label: 'handbook', icon: <BookIcon /> },
   { label: 'announcements', icon: <NotificationsIcon /> },
   { label: 'events', icon: <EventIcon /> },

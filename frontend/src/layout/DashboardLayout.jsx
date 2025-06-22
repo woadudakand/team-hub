@@ -4,8 +4,12 @@ import SideMenu from './SideMenu';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ThemeModeDirectionSync from '../features/theme/ThemeModeDirectionSync';
+import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export default function DashboardLayout({ children, onSignout, user }) {
+export default function DashboardLayout({ children, onSignout }) {
+  const user = useSelector((state) => state.auth.user);
+
   const [darkMode, setDarkMode] = React.useState(false);
   const [direction, setDirection] = React.useState('ltr');
   const [sideOpen, setSideOpen] = React.useState(true);
@@ -42,7 +46,8 @@ export default function DashboardLayout({ children, onSignout, user }) {
             {t('switchTo')} {menuPosition === 'side' ? t('topbar') : t('sidemenu')}
           </button>
         </Box>
-        {children}
+        {/* Render nested route content here */}
+        <Outlet />
       </Box>
     </ThemeProvider>
   );

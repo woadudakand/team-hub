@@ -3,7 +3,7 @@ import Topbar from './Topbar';
 import SideMenu from './SideMenu';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
-export default function DashboardLayout({ children, onSignout }) {
+export default function DashboardLayout({ children, onSignout, user }) {
   const [darkMode, setDarkMode] = React.useState(false);
   const [sideOpen, setSideOpen] = React.useState(true);
   const [menuPosition, setMenuPosition] = React.useState('side'); // 'side' or 'top'
@@ -20,6 +20,7 @@ export default function DashboardLayout({ children, onSignout }) {
           darkMode={darkMode}
           open={sideOpen}
           onThemeToggle={() => setDarkMode((d) => !d)}
+          user={user}
         />
       {menuPosition === 'side' && (
         <SideMenu onMenuToggle={() => setSideOpen((o) => !o)} open={sideOpen} onClose={() => setSideOpen(false)} onSignout={onSignout} />

@@ -16,7 +16,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <DashboardLayout onSignout={handleSignout}>
+    <DashboardLayout onSignout={handleSignout} user={user}>
       <Typography variant="h4" mb={2}>Dashboard</Typography>
       <Typography variant="body1" mb={2}>Welcome, {user?.username || user?.email || 'User'}!</Typography>
     </DashboardLayout>

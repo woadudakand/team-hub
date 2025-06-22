@@ -1,20 +1,35 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Switch, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Box, Avatar, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MailIcon from '@mui/icons-material/Mail';
 
-export default function Topbar({ onMenuToggle, open, darkMode, onThemeToggle }) {
+export default function Topbar({ onMenuToggle, user }) {
   return (
-    <AppBar style={{marginLeft: open ? 240 : 0, width: open ? 'calc(100% - 240px)' : 'calc(100% - 0px)'}} position="static" color={darkMode ? 'default' : 'white'}>
+    <AppBar position="fixed" color="inherit" elevation={1} sx={{ zIndex: 1201 }}>
       <Toolbar>
         <IconButton edge="start" color="inherit" onClick={onMenuToggle} sx={{ mr: 2 }}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-
+        <Typography variant="h6" color="primary" fontWeight={700} sx={{ mr: 2 }}>
+          TEAM HUB
         </Typography>
-        <Box display="flex" alignItems="center">
-          <Typography variant="body2" sx={{ mr: 1 }}>Dark Mode</Typography>
-          <Switch checked={darkMode} onChange={onThemeToggle} />
+        <Box flexGrow={1} />
+        <IconButton color="inherit">
+          <Badge badgeContent={2} color="error">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        <IconButton color="inherit">
+          <MailIcon />
+        </IconButton>
+        <Box ml={2} display="flex" alignItems="center">
+          <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', mr: 1 }}>
+            {user?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || '_'}
+          </Avatar>
+          <Typography variant="body2" color="textSecondary">
+            {user?.username?.toUpperCase() || 'ADMIN _'}
+          </Typography>
         </Box>
       </Toolbar>
     </AppBar>

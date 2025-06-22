@@ -18,5 +18,13 @@
   "projects": "Projects",
   "team": "Team",
   "subitem1": "Subitem 1",
-  "subitem2": "Subitem 2"
+  "subitem2": "Subitem 2",
+  "themeSettings": "Theme Settings",
+  "uploadLogo": "Upload Logo",
+  "uploadFavicon": "Upload Favicon",
+  "title": "Title",
+  "tagline": "Tagline",
+  "darkMode": "Dark Mode",
+  "rtlMode": "RTL Mode",
+  "update": "Update"
 }

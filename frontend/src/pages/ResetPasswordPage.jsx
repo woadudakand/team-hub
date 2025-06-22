@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { resetPassword } from '../features/auth/authSlice';
 import { Button, TextField, Box, Typography, Alert, CircularProgress } from '@mui/material';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const ResetSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
@@ -21,6 +22,7 @@ export default function ResetPasswordPage() {
   return (
     <Box maxWidth={400} mx="auto" mt={8} p={3} boxShadow={2} borderRadius={2}>
       <Typography variant="h5" mb={2}>Reset Password</Typography>
+      {loading && <Loader size={32} message="Resetting password..." />}
       <Formik
         initialValues={{ password: '' }}
         validationSchema={ResetSchema}

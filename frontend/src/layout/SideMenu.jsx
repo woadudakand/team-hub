@@ -18,19 +18,14 @@ const menu = [
   { label: 'dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { label: 'handbook', icon: <BookIcon /> },
   { label: 'announcements', icon: <NotificationsIcon /> },
-  {
-    label: 'hrAdmin', icon: <AdminPanelSettingsIcon />, children: [
-      { label: 'subitem1' }, { label: 'subitem2' }
-    ]
-  },
-  { label: 'evaluation', icon: <AssessmentIcon /> },
   { label: 'events', icon: <EventIcon /> },
   { label: 'projects', icon: <FolderIcon /> },
   {
     label: 'team', icon: <GroupIcon />, children: [
       { label: 'subitem1' }, { label: 'subitem2' }
     ]
-  }
+  },
+  { label: 'themeSettings', icon: <AdminPanelSettingsIcon />, path: '/theme-settings' },
 ];
 
 export default function SideMenu({ open, onClose, onSignout }) {

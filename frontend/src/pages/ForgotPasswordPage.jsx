@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { forgotPassword } from '../features/auth/authSlice';
 import { Button, TextField, Box, Typography, Alert, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const ForgotSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -18,6 +19,7 @@ export default function ForgotPasswordPage() {
   return (
     <Box maxWidth={400} mx="auto" mt={8} p={3} boxShadow={2} borderRadius={2}>
       <Typography variant="h5" mb={2}>Forgot Password</Typography>
+      {loading && <Loader size={32} message="Sending reset link..." />}
       <Formik
         initialValues={{ email: '' }}
         validationSchema={ForgotSchema}

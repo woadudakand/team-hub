@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Box, Avatar, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MailIcon from '@mui/icons-material/Mail';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 export default function Topbar({ onMenuToggle, user }) {
   const { i18n } = useTranslation();
@@ -19,6 +20,25 @@ export default function Topbar({ onMenuToggle, user }) {
     { code: 'zh', label: 'ZH' },
     { code: 'pt', label: 'PT' },
   ];
+  const theme = useSelector(state => state.theme);
+  const logoUrl = theme.logo ? (theme.logo.startsWith('http') ? theme.logo : (import.meta.env.VITE_API_URL + theme.logo)) : null;
+  const faviconUrl = theme.favicon ? (theme.favicon.startsWith('http') ? theme.favicon : (import.meta.env.VITE_API_URL + theme.favicon)) : null;
+  const title = theme.title || 'TEAM HUB';
+
+  useEffect(() => {
+    // Update browser tab title
+    document.title = title;
+    // Update favicon
+    if (faviconUrl) {
+      let link = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = faviconUrl;
+    }
+  }, [title, faviconUrl]);
 
   return (
     <AppBar position="fixed" color="inherit" elevation={1} sx={{ zIndex: 1201 }}>
@@ -26,9 +46,15 @@ export default function Topbar({ onMenuToggle, user }) {
         <IconButton edge="start" color="inherit" onClick={onMenuToggle} sx={{ mr: 2 }}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" color="primary" fontWeight={700} sx={{ mr: 2 }}>
-          TEAM HUB
-        </Typography>
+        {logoUrl ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+            <img src={logoUrl} alt="logo" style={{ height: 36, maxWidth: 120, objectFit: 'contain' }} />
+          </Box>
+        ) : (
+          <Typography variant="h6" color="primary" fontWeight={700} sx={{ mr: 2 }}>
+            {title}
+          </Typography>
+        )}
         <Box flexGrow={1} />
         <IconButton color="inherit">
           <Badge badgeContent={2} color="error">

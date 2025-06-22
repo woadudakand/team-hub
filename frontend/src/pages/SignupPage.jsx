@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { signup } from '../features/auth/authSlice';
 import { Button, TextField, Box, Typography, Alert, CircularProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const SignupSchema = Yup.object().shape({
   f_name: Yup.string().required('First name is required'),
@@ -22,6 +23,7 @@ export default function SignupPage() {
   return (
     <Box maxWidth={400} mx="auto" mt={8} p={3} boxShadow={2} borderRadius={2}>
       <Typography variant="h5" mb={2}>Sign Up</Typography>
+      {loading && <Loader size={32} message="Signing up..." />}
       <Formik
         initialValues={{ f_name: '', l_name: '', username: '', email: '', password: '' }}
         validationSchema={SignupSchema}

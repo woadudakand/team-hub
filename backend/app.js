@@ -29,9 +29,7 @@ module.exports = async function (fastify, opts) {
     );
 
     // Register multipart support for file uploads and form-data with fields attached to body
-    fastify.register(require('@fastify/multipart'), {
-        attachFieldsToBody: true,
-    });
+    fastify.register(require('@fastify/multipart'));
 
     // Register mailer plugin for sending emails
     fastify.decorate('sendMail', require('./plugins/mailer').sendMail);

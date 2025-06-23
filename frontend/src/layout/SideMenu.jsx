@@ -1,17 +1,12 @@
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Collapse, Badge, Divider, Box } from '@mui/material';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, Badge, Box, ListItemButton } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import BookIcon from '@mui/icons-material/Book';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import AssessmentIcon from '@mui/icons-material/Assessment';
 import EventIcon from '@mui/icons-material/Event';
 import FolderIcon from '@mui/icons-material/Folder';
-import GroupIcon from '@mui/icons-material/Group';
-import PowerOffIcon from '@mui/icons-material/Logout';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const menu = [
@@ -21,21 +16,23 @@ const menu = [
   { label: 'announcements', icon: <NotificationsIcon /> },
   { label: 'events', icon: <EventIcon /> },
   { label: 'projects', icon: <FolderIcon /> },
-  {
-    label: 'team', icon: <GroupIcon />, children: [
-      { label: 'subitem1' }, { label: 'subitem2' }
-    ]
-  },
   { label: 'themeSettings', icon: <AdminPanelSettingsIcon />, path: '/theme-settings' },
 ];
 
-export default function SideMenu({ open, onClose, onSignout }) {
+export default function SideMenu({ open }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [openMenus, setOpenMenus] = React.useState({});
+  const location = useLocation();
 
-  const handleMenuClick = (label) => {
-    setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
+  const isActive = (path) => {
+    if (!path) return false;
+    // Exact match for main menu
+
+    if (location.pathname === path) return true;
+    // For dashboard and profile, also highlight for nested routes
+    if ((path === '/dashboard' || path === '/profile') && location.pathname.startsWith(path)) return true;
+    // For other menu items, only highlight on exact match
+    return false;
   };
 
   return (
@@ -46,35 +43,18 @@ export default function SideMenu({ open, onClose, onSignout }) {
       </Box>
       <Divider />
       <List>
-        {menu.map((item, idx) => (
-          <React.Fragment key={item.label}>
-            <ListItem button onClick={() => {
-              if (item.children) handleMenuClick(item.label);
-              else if (item.path) navigate(item.path);
-            }}>
+        {menu.map((item) => (
+          <ListItem disablePadding key={item.label}>
+            <ListItemButton
+              onClick={() => item.path && navigate(item.path)}
+              selected={isActive(item.path)}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={t(item.label)} />
               {item.badge && <Badge color="error" badgeContent={item.badge} sx={{ ml: 1 }} />}
-              {item.children && (openMenus[item.label] ? <ExpandLess /> : <ExpandMore />)}
-            </ListItem>
-            {item.children && (
-              <Collapse in={openMenus[item.label]} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {item.children.map((sub, i) => (
-                    <ListItem button key={sub.label} sx={{ pl: 4 }}>
-                      <ListItemText primary={t(sub.label)} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            )}
-          </React.Fragment>
+            </ListItemButton>
+          </ListItem>
         ))}
-
-        <ListItem button onClick={onSignout}>
-            <ListItemIcon><PowerOffIcon /></ListItemIcon>
-            <ListItemText primary={t('signout')} />
-        </ListItem>
       </List>
     </Drawer>
   );

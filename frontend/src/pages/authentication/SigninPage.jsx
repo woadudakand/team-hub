@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { login } from '../../features/auth/authSlice';
 import { Button, TextField, Box, Typography, Alert, CircularProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import Loader from '../../components/Loader';
 
 const SigninSchema = Yup.object().shape({
   username: Yup.string(),
@@ -25,7 +24,6 @@ export default function SigninPage() {
   return (
     <Box maxWidth={400} mx="auto" mt={8} p={3} boxShadow={2} borderRadius={2}>
       <Typography variant="h5" mb={2}>Sign In</Typography>
-      {loading && <Loader size={32} message="Signing in..." />}
       <Formik
         initialValues={{ username: '', email: '', password: '' }}
         validationSchema={SigninSchema}

@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Box, Avatar, Badge } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Box, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MailIcon from '@mui/icons-material/Mail';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { signout } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import UserMenu from '../components/UserMenu';
 
 export default function Topbar({ onMenuToggle, user }) {
   const { i18n } = useTranslation();
@@ -21,6 +24,8 @@ export default function Topbar({ onMenuToggle, user }) {
     { code: 'pt', label: 'PT' },
   ];
   const theme = useSelector(state => state.theme);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const logoUrl = theme.logo ? (theme.logo.startsWith('http') ? theme.logo : (import.meta.env.VITE_API_URL + theme.logo)) : null;
   const faviconUrl = theme.favicon ? (theme.favicon.startsWith('http') ? theme.favicon : (import.meta.env.VITE_API_URL + theme.favicon)) : null;
   const title = theme.title || 'TEAM HUB';
@@ -77,12 +82,12 @@ export default function Topbar({ onMenuToggle, user }) {
           </select>
         </Box>
         <Box ml={2} display="flex" alignItems="center">
-          <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', mr: 1 }}>
-            {user?.username?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || '_'}
-          </Avatar>
-          <Typography variant="body2" color="textSecondary">
-            {user?.username?.toUpperCase() || 'ADMIN _'}
-          </Typography>
+          <UserMenu
+            user={user}
+            onSignOut={() => { dispatch(signout()); navigate('/signin'); }}
+            onProfile={() => navigate(`/profile/${user?.id}`)}
+            onSettings={() => navigate('/theme-settings')}
+          />
         </Box>
       </Toolbar>
     </AppBar>

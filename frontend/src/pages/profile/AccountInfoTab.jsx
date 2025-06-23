@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { DataService as axios } from '../utility/dataService';
+import { DataService as axios } from '../../utility/dataService';
 import { Box, TextField, Button, Select, MenuItem } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Loader from '../components/Loader';
+import Loader from '../../components/Loader';
 
 export default function AccountInfoTab() {
   const { userId } = useParams();

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { DataService as axios } from '../utility/dataService';
+import { DataService as axios } from '../../utility/dataService';
 import { Box, TextField, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Loader from '../components/Loader';
+import Loader from '../../components/Loader';
 
 export default function GeneralInfoTab() {
   const { userId } = useParams();
@@ -79,32 +79,6 @@ export default function GeneralInfoTab() {
         disabled={!canEdit || !editing}
         InputLabelProps={{ shrink: true }}
       />
-      <Box>
-        <span style={{ marginRight: 16 }}>Gender:</span>
-        <label>
-          <input
-            type="radio"
-            name="gender"
-            value="male"
-            checked={form.gender === 'male'}
-            onChange={handleChange}
-            disabled={!canEdit || !editing}
-          />
-          Male
-        </label>
-        <label style={{ marginLeft: 16 }}>
-          <input
-            type="radio"
-            name="gender"
-            value="female"
-            checked={form.gender === 'female'}
-            onChange={handleChange}
-            disabled={!canEdit || !editing}
-          />
-          Female
-        </label>
-      </Box>
-      <TextField label="Social Media Link" name="social_media_link" value={form.social_media_link || ''} onChange={handleChange} disabled={!canEdit || !editing} />
       {canEdit && !editing && <Button onClick={() => setEditing(true)}>Edit</Button>}
       {canEdit && editing && <Button variant="contained" onClick={handleSave}>Save</Button>}
     </Box>

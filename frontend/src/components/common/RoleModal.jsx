@@ -7,23 +7,23 @@ import { useTranslation } from 'react-i18next';
  * @param {object} props
  * @param {boolean} props.open - Whether the modal is open
  * @param {function} props.onClose - Function to close the modal
- * @param {function} props.onSubmit - Function to handle submit (receives { name })
+ * @param {function} props.onSubmit - Function to handle submit (receives { role })
  * @param {object} [props.initialValues] - Initial values for edit mode
  * @param {string} [props.mode] - 'add' or 'edit'
  */
 export default function RoleModal({ open, onClose, onSubmit, initialValues = {}, mode = 'add' }) {
   const { t } = useTranslation();
-  const [name, setName] = useState(initialValues.name || '');
+  const [role, setRole] = useState(initialValues.role || '');
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    setName(initialValues.name || '');
+    setRole(initialValues.role || '');
     setErrors({});
   }, [initialValues, open]);
 
   const validate = () => {
     const errs = {};
-    if (!name.trim()) errs.name = t('roleNameRequired');
+    if (!role.trim()) errs.role = t('roleNameRequired');
     return errs;
   };
 
@@ -34,7 +34,7 @@ export default function RoleModal({ open, onClose, onSubmit, initialValues = {},
       setErrors(errs);
       return;
     }
-    onSubmit({ name: name.trim() });
+    onSubmit({ role: role.trim() });
   };
 
   return (
@@ -47,10 +47,10 @@ export default function RoleModal({ open, onClose, onSubmit, initialValues = {},
             margin="dense"
             label={t('roleName')}
             fullWidth
-            value={name}
-            onChange={e => setName(e.target.value)}
-            error={!!errors.name}
-            helperText={errors.name}
+            value={role}
+            onChange={e => setRole(e.target.value)}
+            error={!!errors.role}
+            helperText={errors.role}
             required
           />
         </DialogContent>

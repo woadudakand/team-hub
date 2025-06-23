@@ -249,20 +249,6 @@ async function infoRoutes(fastify, opts) {
             }
         }
     );
-
-    // Get all user roles
-    fastify.get(
-        '/user-role',
-        { preHandler: fastify.authenticate },
-        async (request, reply) => {
-            try {
-                const { rows } = await db.query('SELECT * FROM user_role');
-                reply.send(rows);
-            } catch (err) {
-                reply.code(500).send({ error: err.message });
-            }
-        }
-    );
 }
 
 module.exports = infoRoutes;

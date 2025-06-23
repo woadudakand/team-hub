@@ -150,7 +150,7 @@ export default function UserRoleSettings() {
 
   const columns = [
     { key: 'sl', label: 'SL' },
-    { key: 'name', label: t('role') },
+    { key: 'role', label: t('role') },
   ];
   const rows = roles.map((role, idx) => ({ ...role, sl: page * rowsPerPage + idx + 1 }));
 
@@ -197,13 +197,13 @@ export default function UserRoleSettings() {
         open={modalOpen}
         onClose={handleModalClose}
         onSubmit={handleModalSubmit}
-        initialValues={modalMode === 'edit' && modalRole ? { name: modalRole.name } : {}}
+        initialValues={modalMode === 'edit' && modalRole ? { role: modalRole.role } : {}}
         mode={modalMode}
       />
       <ConfirmDialog
         open={confirmOpen}
         title={t('delete') + ' ' + t('role')}
-        content={roleToDelete ? `${t('areYouSureDelete')} '${roleToDelete.name}'?` : ''}
+        content={roleToDelete ? `${t('areYouSureDelete')} '${roleToDelete.role}'?` : ''}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
         confirmLabel={t('delete')}
@@ -221,7 +221,7 @@ export default function UserRoleSettings() {
       <ConfirmDialog
         open={confirmRestoreOpen}
         title={t('restore') + ' ' + t('role')}
-        content={roleToRestore ? `${t('areYouSureRestore')} '${roleToRestore.name}'?` : ''}
+        content={roleToRestore ? `${t('areYouSureRestore')} '${roleToRestore.role}'?` : ''}
         onConfirm={handleConfirmRestore}
         onCancel={handleCancelRestore}
         confirmLabel={t('restore')}

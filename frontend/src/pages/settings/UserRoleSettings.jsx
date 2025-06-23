@@ -165,7 +165,7 @@ export default function UserRoleSettings() {
             <Tab label={t('activeRoles')} />
             <Tab label={t('archivedRoles')} />
           </Tabs>
-          {!archiveTab && <Button variant="contained" onClick={handleAddRole}>{t('addRole')}</Button>}
+          <Button variant="contained" onClick={handleAddRole}>{t('addRole')}</Button>
         </Box>
         <Divider />
         <CardContent>

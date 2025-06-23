@@ -13,6 +13,7 @@ import GeneralInfoTab from './pages/profile/GeneralInfoTab'
 import JobInfoTab from './pages/profile/JobInfoTab'
 import AccountInfoTab from './pages/profile/AccountInfoTab'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import './App.css'
 import AuthLoader from './features/auth/AuthLoader'
 import ThemeMetaSync from './features/theme/ThemeMetaSync'
@@ -31,9 +32,18 @@ function PrivateRoute({ children }) {
 
 function App() {
   const dispatch = useDispatch();
+  const theme = useSelector((state) => state.theme);
+  const { i18n } = useTranslation();
   useEffect(() => {
     dispatch(fetchThemeSettings());
   }, [dispatch]);
+
+  // Set i18n language globally on app load and when theme.language changes
+  useEffect(() => {
+    if (theme.language && i18n.language !== theme.language) {
+      i18n.changeLanguage(theme.language);
+    }
+  }, [theme.language, i18n]);
 
   return (
     <BrowserRouter>

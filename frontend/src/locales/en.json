@@ -71,5 +71,8 @@
   "teamArchive": "Team Archive",
   "archivedTeams": "Archived Teams",
   "restore": "Restore",
-  "areYouSureRestore": "Are you sure you want to restore"
+  "areYouSureRestore": "Are you sure you want to restore",
+  "teamManagement": "Team Management",
+  "activeTeams": "Active Teams",
+  "roleManagement": "Role Management"
 }

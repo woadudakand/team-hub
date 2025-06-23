@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 const settingsMenu = [
   { label: 'themeSettings', path: '/settings/theme-settings' },
   { label: 'team', path: '/settings/team' },
-  { label: 'teamArchive', path: '/settings/team-archive' },
   { label: 'userRole', path: '/settings/user-role' },
 ];
 
@@ -15,7 +14,7 @@ export default function SettingsSideMenu() {
   const location = useLocation();
   const { t } = useTranslation();
   return (
-    <Box width={220} minHeight="100vh" borderRight="1px solid #eee" bgcolor="#fafbfc">
+    <Box width={220} minHeight="100vh" borderRight="1px solid #eee">
       <Box py={2} textAlign="center" fontWeight={700} fontSize={20} color="#1976d2">{t('settings')}</Box>
       <List>
         {settingsMenu.map((item) => (

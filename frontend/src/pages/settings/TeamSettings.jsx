@@ -5,9 +5,11 @@ import { DataService as axios } from '../../utility/dataService';
 import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RestoreIcon from '@mui/icons-material/Restore';
 import IconButton from '@mui/material/IconButton';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
 import TeamModal from '../../components/common/TeamModal';
+import { Tabs, Tab, Button, Card, CardContent, Divider, Typography, Box } from '@mui/material';
 
 export default function TeamSettings() {
   const { t } = useTranslation();
@@ -24,10 +26,14 @@ export default function TeamSettings() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [modalTeam, setModalTeam] = useState(null);
+  const [archiveTab, setArchiveTab] = useState(false);
+  const [confirmRestoreOpen, setConfirmRestoreOpen] = useState(false);
+  const [teamToRestore, setTeamToRestore] = useState(null);
+  const [confirmMultiRestoreOpen, setConfirmMultiRestoreOpen] = useState(false);
 
   const fetchTeams = async () => {
     setLoading(true);
-    const { data } = await axios.get(`/team-list?search=${search}&limit=${rowsPerPage}&offset=${page * rowsPerPage}`);
+    const { data } = await axios.get(`/team-list?search=${search}&limit=${rowsPerPage}&offset=${page * rowsPerPage}&archived=${archiveTab}`);
     setTeams(data.rows || []);
     setTotal(data.total || 0);
     setLoading(false);
@@ -36,7 +42,7 @@ export default function TeamSettings() {
   useEffect(() => {
     fetchTeams();
     // eslint-disable-next-line
-  }, [page, rowsPerPage, search]);
+  }, [page, rowsPerPage, search, archiveTab]);
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
@@ -103,6 +109,44 @@ export default function TeamSettings() {
   const handleModalClose = () => {
     setModalOpen(false);
   };
+  const handleTabChange = (event, newValue) => {
+    setArchiveTab(newValue === 1);
+    setSelected([]);
+    setPage(0);
+  };
+  const handleRestoreTeam = (team) => {
+    setTeamToRestore(team);
+    setConfirmRestoreOpen(true);
+  };
+  const handleConfirmRestore = async () => {
+    if (teamToRestore) {
+      await axios.patch('/team/restore', { ids: [teamToRestore.id] });
+      setTeamToRestore(null);
+      setConfirmRestoreOpen(false);
+      fetchTeams();
+    }
+  };
+  const handleCancelRestore = () => {
+    setTeamToRestore(null);
+    setConfirmRestoreOpen(false);
+  };
+  const handleRestoreSelected = () => {
+    if (selected.length === 0) return;
+    setConfirmMultiRestoreOpen(true);
+  };
+  const handleConfirmMultiRestore = async () => {
+    if (selected.length > 0) {
+      await axios.patch('/team/restore', { ids: selected });
+      setSelected([]);
+      setConfirmMultiRestoreOpen(false);
+      fetchTeams();
+    } else {
+      setConfirmMultiRestoreOpen(false);
+    }
+  };
+  const handleCancelMultiRestore = () => {
+    setConfirmMultiRestoreOpen(false);
+  };
 
   const columns = [
     { key: 'sl', label: 'SL' },
@@ -112,35 +156,52 @@ export default function TeamSettings() {
 
   return (
     <>
-      <ReusableCard title={t('team')} onAdd={handleAddTeam} addLabel={t('addTeam')}>
-        <ReusableTable
-          columns={columns}
-          rows={rows}
-          selected={selected}
-          onSelectAll={handleSelectAll}
-          onSelectRow={handleSelectRow}
-          onDeleteSelected={handleDeleteSelected}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          total={total}
-          onPageChange={(_, newPage) => setPage(newPage)}
-          onRowsPerPageChange={e => { setRowsPerPage(parseInt(e.target.value, 10)); setPage(0); }}
-          onSearch={setSearch}
-          searchValue={search}
-          actions={row => (
-            <>
-              <IconButton color="primary" onClick={() => handleEditTeam(row)} size="small"><EditIcon /></IconButton>
-              <IconButton color="error" onClick={() => handleDeleteTeam(row)} size="small"><DeleteIcon /></IconButton>
-            </>
-          )}
-          loading={loading}
-        />
-      </ReusableCard>
+      <Card>
+        <Box display="flex" alignItems="center" justifyContent="space-between" px={2} py={2}>
+          <Typography variant="h6">{t('teamManagement')}</Typography>
+          <Tabs value={archiveTab ? 1 : 0} onChange={handleTabChange} size="small">
+            <Tab label={t('activeTeams')} />
+            <Tab label={t('archivedTeams')} />
+          </Tabs>
+          <Button variant="contained" onClick={handleAddTeam}>{t('addTeam')}</Button>
+        </Box>
+        <Divider />
+        <CardContent>
+          <ReusableTable
+            columns={columns}
+            rows={rows}
+            selected={selected}
+            onSelectAll={handleSelectAll}
+            onSelectRow={handleSelectRow}
+            onDeleteSelected={archiveTab ? null : handleDeleteSelected}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            total={total}
+            onPageChange={(_, newPage) => setPage(newPage)}
+            onRowsPerPageChange={e => { setRowsPerPage(parseInt(e.target.value, 10)); setPage(0); }}
+            onSearch={setSearch}
+            searchValue={search}
+            actions={row => (
+              archiveTab ? (
+                <IconButton color="primary" onClick={() => handleRestoreTeam(row)} size="small"><RestoreIcon /></IconButton>
+              ) : (
+                <>
+                  <IconButton color="primary" onClick={() => handleEditTeam(row)} size="small"><EditIcon /></IconButton>
+                  <IconButton color="error" onClick={() => handleDeleteTeam(row)} size="small"><DeleteIcon /></IconButton>
+                </>
+              )
+            )}
+            loading={loading}
+            multiActionLabel={selected.length > 0 ? (archiveTab ? t('restoreSelected') : t('deleteSelected')) : undefined}
+            onMultiAction={archiveTab ? handleRestoreSelected : handleDeleteSelected}
+          />
+        </CardContent>
+      </Card>
       <TeamModal
         open={modalOpen}
         onClose={handleModalClose}
         onSubmit={handleModalSubmit}
-        initialValues={modalMode === 'edit' && modalTeam ? { name: modalTeam.title, description: modalTeam.description } : {}}
+        initialValues={modalMode === 'edit' && modalTeam ? { name: modalTeam.title } : {}}
         mode={modalMode}
       />
       <ConfirmDialog
@@ -159,6 +220,24 @@ export default function TeamSettings() {
         onConfirm={handleConfirmMultiDelete}
         onCancel={handleCancelMultiDelete}
         confirmLabel={t('delete')}
+        cancelLabel={t('cancel')}
+      />
+      <ConfirmDialog
+        open={confirmRestoreOpen}
+        title={t('restore') + ' ' + t('team')}
+        content={teamToRestore ? `${t('areYouSureRestore')} '${teamToRestore.title}'?` : ''}
+        onConfirm={handleConfirmRestore}
+        onCancel={handleCancelRestore}
+        confirmLabel={t('restore')}
+        cancelLabel={t('cancel')}
+      />
+      <ConfirmDialog
+        open={confirmMultiRestoreOpen}
+        title={t('restore') + ' ' + t('team')}
+        content={selected.length > 0 ? `${t('areYouSureRestore')} ${selected.length} ${t('team')}${selected.length > 1 ? 's' : ''}?` : ''}
+        onConfirm={handleConfirmMultiRestore}
+        onCancel={handleCancelMultiRestore}
+        confirmLabel={t('restore')}
         cancelLabel={t('cancel')}
       />
     </>

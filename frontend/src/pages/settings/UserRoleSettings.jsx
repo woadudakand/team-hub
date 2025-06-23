@@ -9,6 +9,8 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import IconButton from '@mui/material/IconButton';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
 import RoleModal from '../../components/common/RoleModal';
+import { Tabs, Tab } from '@mui/material';
+import { Button, Card, CardContent, Divider, Typography, Box } from '@mui/material';
 
 export default function UserRoleSettings() {
   const { t } = useTranslation();
@@ -109,8 +111,8 @@ export default function UserRoleSettings() {
     setModalOpen(false);
   };
   // Archive/Restore logic
-  const handleTabChange = () => {
-    setArchiveTab(!archiveTab);
+  const handleTabChange = (event, newValue) => {
+    setArchiveTab(newValue === 1);
     setSelected([]);
     setPage(0);
   };
@@ -156,43 +158,47 @@ export default function UserRoleSettings() {
 
   return (
     <>
-      <ReusableCard
-        title={archiveTab ? t('archivedRoles') : t('role')}
-        onAdd={archiveTab ? null : handleAddRole}
-        addLabel={t('addRole')}
-        tabLabel={archiveTab ? t('activeRoles') : t('archivedRoles')}
-        onTabChange={handleTabChange}
-        tabValue={archiveTab ? 1 : 0}
-      >
-        <ReusableTable
-          columns={columns}
-          rows={rows}
-          selected={selected}
-          onSelectAll={handleSelectAll}
-          onSelectRow={handleSelectRow}
-          onDeleteSelected={archiveTab ? null : handleDeleteSelected}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          total={total}
-          onPageChange={(_, newPage) => setPage(newPage)}
-          onRowsPerPageChange={e => { setRowsPerPage(parseInt(e.target.value, 10)); setPage(0); }}
-          onSearch={setSearch}
-          searchValue={search}
-          actions={row => (
-            archiveTab ? (
-              <IconButton color="primary" onClick={() => handleRestoreRole(row)} size="small"><RestoreIcon /></IconButton>
-            ) : (
-              <>
-                <IconButton color="primary" onClick={() => handleEditRole(row)} size="small"><EditIcon /></IconButton>
-                <IconButton color="error" onClick={() => handleDeleteRole(row)} size="small"><DeleteIcon /></IconButton>
-              </>
-            )
-          )}
-          loading={loading}
-          multiActionLabel={selected.length > 0 ? (archiveTab ? t('restoreSelected') : t('deleteSelected')) : undefined}
-          onMultiAction={archiveTab ? handleRestoreSelected : handleDeleteSelected}
-        />
-      </ReusableCard>
+      <Card>
+        <Box display="flex" alignItems="center" justifyContent="space-between" px={2} py={2}>
+          <Typography variant="h6">{t('roleManagement')}</Typography>
+          <Tabs value={archiveTab ? 1 : 0} onChange={handleTabChange} size="small">
+            <Tab label={t('activeRoles')} />
+            <Tab label={t('archivedRoles')} />
+          </Tabs>
+          {!archiveTab && <Button variant="contained" onClick={handleAddRole}>{t('addRole')}</Button>}
+        </Box>
+        <Divider />
+        <CardContent>
+          <ReusableTable
+            columns={columns}
+            rows={rows}
+            selected={selected}
+            onSelectAll={handleSelectAll}
+            onSelectRow={handleSelectRow}
+            onDeleteSelected={archiveTab ? null : handleDeleteSelected}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            total={total}
+            onPageChange={(_, newPage) => setPage(newPage)}
+            onRowsPerPageChange={e => { setRowsPerPage(parseInt(e.target.value, 10)); setPage(0); }}
+            onSearch={setSearch}
+            searchValue={search}
+            actions={row => (
+              archiveTab ? (
+                <IconButton color="primary" onClick={() => handleRestoreRole(row)} size="small"><RestoreIcon /></IconButton>
+              ) : (
+                <>
+                  <IconButton color="primary" onClick={() => handleEditRole(row)} size="small"><EditIcon /></IconButton>
+                  <IconButton color="error" onClick={() => handleDeleteRole(row)} size="small"><DeleteIcon /></IconButton>
+                </>
+              )
+            )}
+            loading={loading}
+            multiActionLabel={selected.length > 0 ? (archiveTab ? t('restoreSelected') : t('deleteSelected')) : undefined}
+            onMultiAction={archiveTab ? handleRestoreSelected : handleDeleteSelected}
+          />
+        </CardContent>
+      </Card>
       <RoleModal
         open={modalOpen}
         onClose={handleModalClose}

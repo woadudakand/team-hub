@@ -18,6 +18,7 @@ export default function AuthLoader({ children }) {
 
   useEffect(() => {
     if (!token || error === 'Failed to load user') {
+      console.log('User not authenticated or error loading user:', error);
       navigate('/signin');
     }
   }, [token, error, navigate]);

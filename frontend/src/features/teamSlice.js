@@ -59,11 +59,23 @@ const teamSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+      .addCase(fetchAllTeams.pending, (state) => {
+        state.error = null;
+      })
       .addCase(fetchAllTeams.fulfilled, (state, action) => {
         state.allTeams = action.payload || [];
+      })
+      .addCase(fetchAllTeams.rejected, (state, action) => {
+        state.error = action.error.message;
       });
   },
 });
 
 export const { setSearch, setPage, setRowsPerPage } = teamSlice.actions;
 export default teamSlice.reducer;
+// Add a clearTeams action if you want to reset state externally
+export const clearTeams = () => (dispatch) => {
+  dispatch(teamSlice.actions.setSearch(''));
+  dispatch(teamSlice.actions.setPage(0));
+  dispatch(teamSlice.actions.setRowsPerPage(10));
+};

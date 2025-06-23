@@ -47,47 +47,47 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AuthLoader>
-        <ThemeMetaSync />
-        <Routes>
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
+      <Routes>
+        <Route path="/signin" element={<SigninPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <AuthLoader>
+                <ThemeMetaSync />
                 <DashboardLayout />
-              </PrivateRoute>
-            }
-          >
-            <Route path="dashboard" element={<DashboardPage />} />
-            {/* Settings route with nested subpages */}
-            <Route path="settings" element={<SettingsPage />}>
-              <Route path="theme-settings" element={<ThemeSettingsDashboard />} />
-              <Route path="team" element={<TeamSettings />} />
-              <Route path="team-archive" element={<ArchiveTab />} />
-              <Route path="user-role" element={<UserRoleSettings />} />
-              <Route index element={<Navigate to="theme-settings" />} />
-            </Route>
-            <Route path="profile/:userId" element={<ProfilePage />}>
-              <Route path="general-info" element={<GeneralInfoTab />} />
-              <Route path="job-info" element={<JobInfoTab />} />
-              <Route path="account-info" element={<AccountInfoTab />} />
-              <Route index element={<Navigate to="general-info" />} />
-            </Route>
-            <Route path="profile" element={<ProfilePage />}>
-              <Route path="general-info" element={<GeneralInfoTab />} />
-              <Route path="job-info" element={<JobInfoTab />} />
-              <Route path="account-info" element={<AccountInfoTab />} />
-              <Route index element={<Navigate to="general-info" />} />
-            </Route>
-            <Route index element={<Navigate to="dashboard" />} />
-            <Route path="*" element={<Navigate to="dashboard" />} />
+              </AuthLoader>
+            </PrivateRoute>
+          }
+        >
+          <Route path="dashboard" element={<DashboardPage />} />
+          {/* Settings route with nested subpages */}
+          <Route path="settings" element={<SettingsPage />}>
+            <Route path="theme-settings" element={<ThemeSettingsDashboard />} />
+            <Route path="team" element={<TeamSettings />} />
+            <Route path="team-archive" element={<ArchiveTab />} />
+            <Route path="user-role" element={<UserRoleSettings />} />
+            <Route index element={<Navigate to="theme-settings" />} />
           </Route>
-        </Routes>
-      </AuthLoader>
+          <Route path="profile/:userId" element={<ProfilePage />}>
+            <Route path="general-info" element={<GeneralInfoTab />} />
+            <Route path="job-info" element={<JobInfoTab />} />
+            <Route path="account-info" element={<AccountInfoTab />} />
+            <Route index element={<Navigate to="general-info" />} />
+          </Route>
+          <Route path="profile" element={<ProfilePage />}>
+            <Route path="general-info" element={<GeneralInfoTab />} />
+            <Route path="job-info" element={<JobInfoTab />} />
+            <Route path="account-info" element={<AccountInfoTab />} />
+            <Route index element={<Navigate to="general-info" />} />
+          </Route>
+          <Route index element={<Navigate to="dashboard" />} />
+          <Route path="*" element={<Navigate to="dashboard" />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   )
 }

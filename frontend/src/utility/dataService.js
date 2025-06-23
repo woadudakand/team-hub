@@ -9,9 +9,9 @@ const authHeader = () => ({
 
 const client = axios.create({
     baseURL: API_ENDPOINT,
+    // Remove default Content-Type so browser can set it for FormData
     headers: {
         Authorization: `Bearer ${getItem('token')}`,
-        'Content-Type': 'application/json',
     },
 });
 
@@ -25,11 +25,13 @@ class DataService {
     }
 
     static post(path = '', data = {}, optionalHeader = {}) {
+        // If data is FormData, do not set Content-Type header
+        const isFormData = typeof FormData !== 'undefined' && data instanceof FormData;
         return client({
             method: 'POST',
             url: path,
             data,
-            headers: { ...authHeader(), ...optionalHeader },
+            headers: isFormData ? { ...authHeader(), ...optionalHeader } : { ...authHeader(), 'Content-Type': 'application/json', ...optionalHeader },
         });
     }
 
@@ -38,7 +40,7 @@ class DataService {
             method: 'PATCH',
             url: path,
             data: JSON.stringify(data),
-            headers: { ...authHeader() },
+            headers: { ...authHeader(), 'Content-Type': 'application/json' },
         });
     }
 
@@ -47,7 +49,7 @@ class DataService {
             method: 'PUT',
             url: path,
             data: JSON.stringify(data),
-            headers: { ...authHeader() },
+            headers: { ...authHeader(), 'Content-Type': 'application/json' },
         });
     }
 
@@ -56,7 +58,7 @@ class DataService {
             method: 'DELETE',
             url: path,
             data,
-            headers: { ...authHeader() },
+            headers: { ...authHeader(), 'Content-Type': 'application/json' },
         });
     }
 }

@@ -22,6 +22,7 @@ import SettingsPage from './pages/settings/SettingsPage';
 import SettingsSideMenu from './pages/settings/SettingsSideMenu';
 import TeamSettings from './pages/settings/TeamSettings';
 import UserRoleSettings from './pages/settings/UserRoleSettings';
+import ArchiveTab from './pages/settings/ArchiveTab';
 
 function PrivateRoute({ children }) {
   const token = useSelector((state) => state.auth.token)
@@ -56,6 +57,7 @@ function App() {
             <Route path="settings" element={<SettingsPage />}>
               <Route path="theme-settings" element={<ThemeSettingsDashboard />} />
               <Route path="team" element={<TeamSettings />} />
+              <Route path="team-archive" element={<ArchiveTab />} />
               <Route path="user-role" element={<UserRoleSettings />} />
               <Route index element={<Navigate to="theme-settings" />} />
             </Route>

@@ -52,5 +52,17 @@
   "loadingJobInfo": "Loading job info...",
   "loadingAccountInfo": "Loading account info...",
   "updateSuccess": "Update successful!",
-  "updateFailed": "Update failed!"
+  "updateFailed": "Update failed!",
+  "addTeam": "Add Team",
+  "editTeam": "Edit Team",
+  "teamName": "Team Name",
+  "teamNameRequired": "Team name is required",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "areYouSureDelete": "Are you sure you want to delete",
+  "archive": "Archive",
+  "teamArchive": "Team Archive",
+  "archivedTeams": "Archived Teams",
+  "restore": "Restore",
+  "areYouSureRestore": "Are you sure you want to restore"
 }

@@ -69,18 +69,6 @@ export default function Topbar({ onMenuToggle, user }) {
         <IconButton color="inherit">
           <MailIcon />
         </IconButton>
-        {/* Language Switcher */}
-        <Box ml={2} display="flex" alignItems="center">
-          <select
-            value={i18n.language}
-            onChange={e => i18n.changeLanguage(e.target.value)}
-            style={{ padding: '4px 8px', borderRadius: 4, border: '1px solid #ccc', marginRight: 16 }}
-          >
-            {languages.map(lang => (
-              <option key={lang.code} value={lang.code}>{lang.label}</option>
-            ))}
-          </select>
-        </Box>
         <Box ml={2} display="flex" alignItems="center">
           <UserMenu
             user={user}

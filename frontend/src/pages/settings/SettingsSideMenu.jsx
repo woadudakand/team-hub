@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 const settingsMenu = [
   { label: 'themeSettings', path: '/settings/theme-settings' },
   { label: 'team', path: '/settings/team' },
+  { label: 'teamArchive', path: '/settings/team-archive' },
   { label: 'userRole', path: '/settings/user-role' },
 ];
 
@@ -21,7 +22,7 @@ export default function SettingsSideMenu() {
           <ListItemButton
             key={item.label}
             onClick={() => navigate(item.path)}
-            selected={location.pathname.startsWith(item.path)}
+            selected={location.pathname == item.path}
           >
             <ListItemText primary={t(item.label)} />
           </ListItemButton>

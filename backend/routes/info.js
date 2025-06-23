@@ -238,26 +238,12 @@ async function infoRoutes(fastify, opts) {
                 return reply.code(400).send({ error: 'No fields to update' });
             try {
                 const { rows } = await db.query(
-                    `UPDATE users SET ${updates.join(', ')} WHERE id = $${values.length} RETURNING id, username, email, role`,
+                    `UPDATE users SET ${updates.join(', ')} WHERE id = $${
+                        values.length
+                    } RETURNING id, username, email, role`,
                     values
                 );
                 reply.send(rows[0]);
-            } catch (err) {
-                reply.code(500).send({ error: err.message });
-            }
-        }
-    );
-
-    // Get all teams
-    fastify.get(
-        '/team',
-        { preHandler: fastify.authenticate },
-        async (request, reply) => {
-            try {
-                const { rows } = await db.query(
-                    'SELECT * FROM team WHERE deleted = false OR deleted IS NULL'
-                );
-                reply.send(rows);
             } catch (err) {
                 reply.code(500).send({ error: err.message });
             }

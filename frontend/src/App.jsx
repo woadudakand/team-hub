@@ -18,6 +18,10 @@ import AuthLoader from './features/auth/AuthLoader'
 import ThemeMetaSync from './features/theme/ThemeMetaSync'
 import { fetchThemeSettings } from './features/theme/themeSlice'
 import DashboardLayout from './layout/DashboardLayout'
+import SettingsPage from './pages/settings/SettingsPage';
+import SettingsSideMenu from './pages/settings/SettingsSideMenu';
+import TeamSettings from './pages/settings/TeamSettings';
+import UserRoleSettings from './pages/settings/UserRoleSettings';
 
 function PrivateRoute({ children }) {
   const token = useSelector((state) => state.auth.token)
@@ -48,7 +52,13 @@ function App() {
             }
           >
             <Route path="dashboard" element={<DashboardPage />} />
-            <Route path="theme-settings" element={<ThemeSettingsDashboard />} />
+            {/* Settings route with nested subpages */}
+            <Route path="settings" element={<SettingsPage />}>
+              <Route path="theme-settings" element={<ThemeSettingsDashboard />} />
+              <Route path="team" element={<TeamSettings />} />
+              <Route path="user-role" element={<UserRoleSettings />} />
+              <Route index element={<Navigate to="theme-settings" />} />
+            </Route>
             <Route path="profile/:userId" element={<ProfilePage />}>
               <Route path="general-info" element={<GeneralInfoTab />} />
               <Route path="job-info" element={<JobInfoTab />} />

@@ -2,8 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Tabs, Tab, Box } from '@mui/material';
 import { Outlet, Link, useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function ProfilePage() {
+  const { t } = useTranslation();
   const loggedInUser = useSelector((state) => state.auth.user);
   const location = useLocation();
   const params = useParams();
@@ -26,9 +28,9 @@ export default function ProfilePage() {
   return (
     <Box maxWidth={700} mx="auto" mt={4}>
       <Tabs value={currentTab} onChange={handleTabChange}>
-        <Tab label="General Info" component={Link} to={`general-info`} />
-        <Tab label="Job Info" component={Link} to={`job-info`} />
-        {canEdit && <Tab label="Account Info" component={Link} to={`account-info`} />}
+        <Tab label={t('generalInfo')} component={Link} to={`general-info`} />
+        <Tab label={t('jobInfo')} component={Link} to={`job-info`} />
+        {canEdit && <Tab label={t('accountInfo')} component={Link} to={`account-info`} />}
       </Tabs>
       <Box mt={3}>
         <Outlet />

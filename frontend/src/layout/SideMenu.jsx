@@ -16,7 +16,7 @@ const menu = [
   { label: 'announcements', icon: <NotificationsIcon /> },
   { label: 'events', icon: <EventIcon /> },
   { label: 'projects', icon: <FolderIcon /> },
-  { label: 'themeSettings', icon: <AdminPanelSettingsIcon />, path: '/theme-settings' },
+  { label: 'settings', icon: <AdminPanelSettingsIcon />, path: '/settings' },
 ];
 
 export default function SideMenu({ open }) {

@@ -4,8 +4,10 @@ import { Box, TextField, Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Loader from '../../components/Loader';
+import { useTranslation } from 'react-i18next';
 
 export default function GeneralInfoTab() {
+  const { t } = useTranslation();
   const { userId } = useParams();
   const loggedInUser = useSelector((state) => state.auth.user);
   const actualUserId = userId || loggedInUser?.id;
@@ -61,17 +63,17 @@ export default function GeneralInfoTab() {
     }
   };
 
-  if (loading || !form) return <Loader message="Loading general info..." />;
+  if (loading || !form) return <Loader message={t('loadingGeneralInfo')} />;
 
   return (
     <Box display="flex" flexDirection="column" gap={2}>
-      <TextField label="First Name" name="f_name" value={form.f_name || ''} onChange={handleChange} disabled={!canEdit || !editing} />
-      <TextField label="Last Name" name="l_name" value={form.l_name || ''} onChange={handleChange} disabled={!canEdit || !editing} />
-      <TextField label="Mailing Address" name="mailing_address" value={form.mailing_address || ''} onChange={handleChange} disabled={!canEdit || !editing} />
-      <TextField label="Alternative Address" name="alternative_address" value={form.alternative_address || ''} onChange={handleChange} disabled={!canEdit || !editing} />
-      <TextField label="Phone" name="phone" value={form.phone || ''} onChange={handleChange} disabled={!canEdit || !editing} />
+      <TextField label={t('firstName')} name="f_name" value={form.f_name || ''} onChange={handleChange} disabled={!canEdit || !editing} />
+      <TextField label={t('lastName')} name="l_name" value={form.l_name || ''} onChange={handleChange} disabled={!canEdit || !editing} />
+      <TextField label={t('mailingAddress')} name="mailing_address" value={form.mailing_address || ''} onChange={handleChange} disabled={!canEdit || !editing} />
+      <TextField label={t('alternativeAddress')} name="alternative_address" value={form.alternative_address || ''} onChange={handleChange} disabled={!canEdit || !editing} />
+      <TextField label={t('phone')} name="phone" value={form.phone || ''} onChange={handleChange} disabled={!canEdit || !editing} />
       <TextField
-        label="Date of Birth"
+        label={t('dateOfBirth')}
         name="date_of_birth"
         type="date"
         value={form.date_of_birth || ''}
@@ -79,8 +81,8 @@ export default function GeneralInfoTab() {
         disabled={!canEdit || !editing}
         InputLabelProps={{ shrink: true }}
       />
-      {canEdit && !editing && <Button onClick={() => setEditing(true)}>Edit</Button>}
-      {canEdit && editing && <Button variant="contained" onClick={handleSave}>Save</Button>}
+      {canEdit && !editing && <Button onClick={() => setEditing(true)}>{t('edit')}</Button>}
+      {canEdit && editing && <Button variant="contained" onClick={handleSave}>{t('save')}</Button>}
     </Box>
   );
 }

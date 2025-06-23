@@ -86,7 +86,7 @@ export default function ThemeSettingsPage() {
                 {t('uploadLogo')}
                 <input type="file" hidden ref={logoRef} onChange={() => handleFile('logo', logoRef)} />
               </Button>
-              {form?.logo && <img src={import.meta.env.VITE_API_URL + form.logo} alt="logo" style={{ height: 40, marginLeft: 16 }} />}
+              {form?.logo && <img src={import.meta.env.VITE_API_URL + form.logo} alt={t('logo')} style={{ height: 40, marginLeft: 16 }} />}
             </Box>
           </Box>
           <Box display="flex" alignItems="center" gap={2}>
@@ -96,23 +96,23 @@ export default function ThemeSettingsPage() {
                 {t('uploadFavicon')}
                 <input type="file" hidden ref={faviconRef} onChange={() => handleFile('favicon', faviconRef)} />
               </Button>
-              {form?.favicon && <img src={import.meta.env.VITE_API_URL + form.favicon} alt="favicon" style={{ height: 32, marginLeft: 16 }} />}
+              {form?.favicon && <img src={import.meta.env.VITE_API_URL + form.favicon} alt={t('favicon')} style={{ height: 32, marginLeft: 16 }} />}
             </Box>
           </Box>
           <Box display="flex" alignItems="center" gap={2}>
             <Box flex={1}><Typography>{t('title')}</Typography></Box>
-            <Box flex={2}><TextField fullWidth name="title" value={form?.title} onChange={handleChange} /></Box>
+            <Box flex={2}><TextField fullWidth name="title" value={form?.title} onChange={handleChange} label={t('title')} /></Box>
           </Box>
           <Box display="flex" alignItems="center" gap={2}>
             <Box flex={1}><Typography>{t('tagline')}</Typography></Box>
-            <Box flex={2}><TextField fullWidth name="tagline" value={form?.tagline} onChange={handleChange} /></Box>
+            <Box flex={2}><TextField fullWidth name="tagline" value={form?.tagline} onChange={handleChange} label={t('tagline')} /></Box>
           </Box>
           <Box display="flex" alignItems="center" gap={2}>
             <Box flex={1}><Typography>{t('language')}</Typography></Box>
             <Box flex={2}>
-              <Select fullWidth sx={{ textAlign: 'left' }} value={languageValue} name="language" onChange={e => { i18n.changeLanguage(e.target.value); handleChange(e); }}>
+              <Select fullWidth sx={{ textAlign: 'left' }} value={languageValue} name="language" onChange={e => { i18n.changeLanguage(e.target.value); handleChange(e); }} label={t('language')}>
                 {['en','bn','es','fr','de','hi','ar','ru','zh','pt'].map(l => (
-                  <MenuItem key={l} value={l}>{l.toUpperCase()}</MenuItem>
+                  <MenuItem key={l} value={l}>{t(l)}</MenuItem>
                 ))}
               </Select>
             </Box>

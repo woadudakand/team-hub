@@ -4,8 +4,10 @@ import { Box, TextField, Button, MenuItem, Select } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Loader from '../../components/Loader';
+import { useTranslation } from 'react-i18next';
 
 export default function JobInfoTab() {
+  const { t } = useTranslation();
   const { userId } = useParams();
   const loggedInUser = useSelector((state) => state.auth.user);
   const actualUserId = userId || loggedInUser?.id;
@@ -53,20 +55,20 @@ export default function JobInfoTab() {
     }
   };
 
-  if (loading || !form) return <Loader message="Loading job info..." />;
+  if (loading || !form) return <Loader message={t('loadingJobInfo')} />;
 
   return (
     <Box display="flex" flexDirection="column" gap={2}>
-      <TextField label="Job Title" name="job_title" value={form.job_title || ''} onChange={handleChange} disabled={!canEdit || !editing} />
+      <TextField label={t('jobTitle')} name="job_title" value={form.job_title || ''} onChange={handleChange} disabled={!canEdit || !editing} />
       <Select name="team_id" value={form.team_id || ''} onChange={handleChange} disabled={!canEdit || !editing} displayEmpty>
-        <MenuItem value="">Select Team</MenuItem>
+        <MenuItem value="">{t('selectTeam')}</MenuItem>
         {(Array.isArray(teams) ? teams : []).map((team) => (
           <MenuItem key={team.id} value={team.id}>{team.title}</MenuItem>
         ))}
       </Select>
-      <TextField label="Salary" name="salary" value={form.salary || ''} onChange={handleChange} disabled={!canEdit || !editing} />
+      <TextField label={t('salary')} name="salary" value={form.salary || ''} onChange={handleChange} disabled={!canEdit || !editing} />
       <TextField
-        label="Date of Hire"
+        label={t('dateOfHire')}
         name="date_of_hire"
         type="date"
         value={form.date_of_hire || ''}
@@ -74,8 +76,8 @@ export default function JobInfoTab() {
         disabled={!canEdit || !editing}
         InputLabelProps={{ shrink: true }}
       />
-      {canEdit && !editing && <Button onClick={() => setEditing(true)}>Edit</Button>}
-      {canEdit && editing && <Button variant="contained" onClick={handleSave}>Save</Button>}
+      {canEdit && !editing && <Button onClick={() => setEditing(true)}>{t('edit')}</Button>}
+      {canEdit && editing && <Button variant="contained" onClick={handleSave}>{t('save')}</Button>}
     </Box>
   );
 }

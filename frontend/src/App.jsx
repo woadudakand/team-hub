@@ -24,6 +24,7 @@ import SettingsSideMenu from './pages/settings/SettingsSideMenu';
 import TeamSettings from './pages/settings/TeamSettings';
 import UserRoleSettings from './pages/settings/UserRoleSettings';
 import ArchiveTab from './pages/settings/ArchiveTab';
+import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 
 function PrivateRoute({ children }) {
   const token = useSelector((state) => state.auth.token)
@@ -84,6 +85,7 @@ function App() {
             <Route path="account-info" element={<AccountInfoTab />} />
             <Route index element={<Navigate to="general-info" />} />
           </Route>
+          <Route path="announcements" element={<AnnouncementsPage />} />
           <Route index element={<Navigate to="dashboard" />} />
           <Route path="*" element={<Navigate to="dashboard" />} />
         </Route>

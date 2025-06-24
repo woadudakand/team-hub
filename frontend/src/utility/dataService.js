@@ -26,12 +26,19 @@ class DataService {
 
     static post(path = '', data = {}, optionalHeader = {}) {
         // If data is FormData, do not set Content-Type header
-        const isFormData = typeof FormData !== 'undefined' && data instanceof FormData;
+        const isFormData =
+            typeof FormData !== 'undefined' && data instanceof FormData;
         return client({
             method: 'POST',
             url: path,
             data,
-            headers: isFormData ? { ...authHeader(), ...optionalHeader } : { ...authHeader(), 'Content-Type': 'application/json', ...optionalHeader },
+            headers: isFormData
+                ? { ...authHeader(), ...optionalHeader }
+                : {
+                      ...authHeader(),
+                      'Content-Type': 'application/json',
+                      ...optionalHeader,
+                  },
         });
     }
 
@@ -99,4 +106,73 @@ client.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+// Announcements API helpers
+export const fetchAnnouncements = async ({ page = 1, limit = 10, search = '' } = {}) => {
+    const params = [];
+    if (page) params.push(`page=${page}`);
+    if (limit) params.push(`limit=${limit}`);
+    if (search) params.push(`search=${encodeURIComponent(search)}`);
+    const query = params.length ? `?${params.join('&')}` : '';
+    const res = await DataService.get(`/announcements${query}`);
+    return res.data;
+};
+
+export const searchAnnouncements = async (search) => {
+    const res = await DataService.get(
+        `/announcements?search=${encodeURIComponent(search)}`
+    );
+    return res.data.data || res.data;
+};
+
+export const createAnnouncement = async (data) => {
+    const res = await DataService.post('/announcements', data);
+    return res.data;
+};
+
+export const updateAnnouncement = async (id, data) => {
+    const res = await DataService.put(`/announcements/${id}`, data);
+    return res.data;
+};
+
+export const deleteAnnouncement = async (id) => {
+    const res = await DataService.delete(`/announcements/${id}`);
+    return res.data;
+};
+
 export { DataService };
+
+// --- JWT AUTH FIX FOR FASTIFY ---
+// In your backend/app.js, add this after registering plugins:
+// fastify.register(require('@fastify/jwt'), { secret: process.env.JWT_SECRET });
+// fastify.decorate('authenticate', async function (request, reply) {
+//   try {
+//     await request.jwtVerify();
+//   } catch (err) {
+//     reply.code(401).send({ error: 'Unauthorized' });
+//   }
+// });
+//
+// In your routes, use { preHandler: [fastify.authenticate] } for protected routes.
+//
+// If you want to keep your custom isAuthenticated, update it as follows:
+//
+// In plugins/support.js:
+// const fp = require('fastify-plugin');
+// module.exports = fp(async function (fastify, opts) {
+//   fastify.decorate('isAuthenticated', function (req, reply, done) {
+//     const auth = req.headers.authorization;
+//     if (!auth) return reply.code(401).send({ error: 'Unauthorized' });
+//     const token = auth.split(' ')[1];
+//     try {
+//       req.user = fastify.jwt.verify(token);
+//       done();
+//     } catch (e) {
+//       reply.code(401).send({ error: 'Invalid token' });
+//     }
+//   });
+// });
+//
+// Then in your routes, use { preHandler: [fastify.isAuthenticated] }
+//
+// This ensures req.user is set and your protected routes work as expected.

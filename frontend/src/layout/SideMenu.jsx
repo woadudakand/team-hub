@@ -11,9 +11,9 @@ import { useTranslation } from 'react-i18next';
 
 const menu = [
   { label: 'dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+  { label: 'announcements', icon: <NotificationsIcon />, path: '/announcements' }, // Move announcements under dashboard
   { label: 'profile', icon: <AdminPanelSettingsIcon />, path: '/profile' },
   { label: 'handbook', icon: <BookIcon /> },
-  { label: 'announcements', icon: <NotificationsIcon /> },
   { label: 'events', icon: <EventIcon /> },
   { label: 'projects', icon: <FolderIcon /> },
   { label: 'settings', icon: <AdminPanelSettingsIcon />, path: '/settings' },

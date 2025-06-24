@@ -77,5 +77,14 @@
   "activeRoles": "Roles activos",
   "restoreSelected": "Restaurar seleccionados",
   "deleteSelected": "Eliminar seleccionados",
-  "roleManagement": "Gestión de roles"
+  "roleManagement": "Gestión de roles",
+  "projectStatus": "Estado del proyecto",
+  "activeStatuses": "Estados activos",
+  "archivedStatuses": "Estados archivados",
+  "status": "Estado",
+  "addStatus": "Agregar estado",
+  "editStatus": "Editar estado",
+  "statusName": "Nombre del estado",
+  "statusNameRequired": "El nombre del estado es obligatorio",
+  "statusManagement": "Gestión de estados de proyecto"
 }

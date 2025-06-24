@@ -1,0 +1,86 @@
+import React, { useState, useEffect } from 'react';
+import { Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem } from '@mui/material';
+import { createProject, updateProject } from '../../utility/projectService';
+import { fetchProjectStatuses } from '../../utility/projectStatusService';
+import { useNavigate } from 'react-router-dom';
+
+export default function ProjectForm({ open, onClose, editData }) {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [status, setStatus] = useState('active');
+  const [statusOptions, setStatusOptions] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (editData) {
+      setName(editData.name || '');
+      setDescription(editData.description || '');
+      setStatus(editData.status || 'active');
+    } else {
+      setName('');
+      setDescription('');
+      setStatus('active');
+    }
+  }, [editData]);
+
+  useEffect(() => {
+    fetchProjectStatuses({ page: 1, limit: 100 }).then(res => {
+      setStatusOptions(res.rows ? res.rows.filter(s => !s.deleted) : []);
+    });
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (editData) {
+      await updateProject(editData.id, { name, description, status });
+      onClose(true);
+    } else {
+      const created = await createProject({ name, description, status });
+      onClose(false); // close modal
+      if (created && created.id) {
+        navigate(`/projects/${created.id}`); // go to new project page
+      }
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={() => onClose(false)}>
+      <DialogTitle>{editData ? 'Edit Project' : 'New Project'}</DialogTitle>
+      <form onSubmit={handleSubmit}>
+        <DialogContent>
+          <TextField
+            label="Name"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            select
+            label="Status"
+            value={status}
+            onChange={e => setStatus(e.target.value)}
+            fullWidth
+            margin="normal"
+          >
+            {statusOptions.map(opt => (
+              <MenuItem key={opt.status} value={opt.status}>{opt.status}</MenuItem>
+            ))}
+          </TextField>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => onClose(false)}>Cancel</Button>
+          <Button type="submit" variant="contained">Save</Button>
+        </DialogActions>
+      </form>
+    </Dialog>
+  );
+}

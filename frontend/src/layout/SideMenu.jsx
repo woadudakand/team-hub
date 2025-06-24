@@ -13,9 +13,9 @@ const menu = [
   { label: 'dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { label: 'announcements', icon: <NotificationsIcon />, path: '/announcements' }, // Move announcements under dashboard
   { label: 'profile', icon: <AdminPanelSettingsIcon />, path: '/profile' },
-  { label: 'handbook', icon: <BookIcon /> },
-  { label: 'events', icon: <EventIcon /> },
-  { label: 'projects', icon: <FolderIcon /> },
+  { label: 'handbook', icon: <BookIcon />, path: '/handbook' },
+  { label: 'events', icon: <EventIcon />, path: '/events' },
+  { label: 'projects', icon: <FolderIcon />, path: '/projects' },
   { label: 'settings', icon: <AdminPanelSettingsIcon />, path: '/settings' },
 ];
 

@@ -74,5 +74,14 @@
   "areYouSureRestore": "Are you sure you want to restore",
   "teamManagement": "Team Management",
   "activeTeams": "Active Teams",
-  "roleManagement": "Role Management"
+  "roleManagement": "Role Management",
+  "projectStatus": "Project Status",
+  "activeStatuses": "Active Statuses",
+  "archivedStatuses": "Archived Statuses",
+  "status": "Status",
+  "addStatus": "Add Status",
+  "editStatus": "Edit Status",
+  "statusName": "Status Name",
+  "statusNameRequired": "Status name is required",
+  "statusManagement": "Project Status Management"
 }

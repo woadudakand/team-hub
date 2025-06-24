@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 const settingsMenu = [
   { label: 'themeSettings', path: '/settings/theme-settings' },
   { label: 'team', path: '/settings/team' },
-  { label: 'userRole', path: '/settings/user-role' }
+  { label: 'userRole', path: '/settings/user-role' },
+  { label: 'projectStatus', path: '/settings/project-status' }
 ];
 
 export default function SettingsSideMenu() {

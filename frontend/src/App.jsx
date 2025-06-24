@@ -25,6 +25,9 @@ import TeamSettings from './pages/settings/TeamSettings';
 import UserRoleSettings from './pages/settings/UserRoleSettings';
 import ArchiveTab from './pages/settings/ArchiveTab';
 import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
+import ProjectsPage from './pages/projects/ProjectsPage';
+import ProjectViewPage from './pages/projects/ProjectViewPage';
+import ProjectStatusSettings from './pages/settings/ProjectStatusSettings';
 
 function PrivateRoute({ children }) {
   const token = useSelector((state) => state.auth.token)
@@ -71,6 +74,7 @@ function App() {
             <Route path="team" element={<TeamSettings />} />
             <Route path="team-archive" element={<ArchiveTab />} />
             <Route path="user-role" element={<UserRoleSettings />} />
+            <Route path="project-status" element={<ProjectStatusSettings />} />
             <Route index element={<Navigate to="theme-settings" />} />
           </Route>
           <Route path="profile/:userId" element={<ProfilePage />}>
@@ -86,6 +90,8 @@ function App() {
             <Route index element={<Navigate to="general-info" />} />
           </Route>
           <Route path="announcements" element={<AnnouncementsPage />} />
+          <Route path="projects" element={<ProjectsPage />} />
+          <Route path="projects/:projectId" element={<ProjectViewPage />} />
           <Route index element={<Navigate to="dashboard" />} />
           <Route path="*" element={<Navigate to="dashboard" />} />
         </Route>

@@ -20,7 +20,7 @@ exports.up = (pgm) => {
         },
         files: { type: 'text', notNull: true },
         read_by: { type: 'text', notNull: false },
-        deleted: { type: 'integer', notNull: true, default: 0 },
+        deleted: { type: 'boolean', notNull: true, default: false },
     });
 };
 

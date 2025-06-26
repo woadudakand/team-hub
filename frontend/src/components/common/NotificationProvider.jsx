@@ -39,8 +39,8 @@ export default function NotificationProvider({ children }) {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           sx={{ mb: notifications.indexOf(notification) * 7 }}
         >
-          <Alert 
-            onClose={() => hideNotification(notification.id)} 
+          <Alert
+            onClose={() => hideNotification(notification.id)}
             severity={notification.severity}
             variant="filled"
             sx={{ width: '100%' }}

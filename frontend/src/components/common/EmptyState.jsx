@@ -10,7 +10,7 @@ const iconMap = {
   search: SearchIcon,
 };
 
-export default function EmptyState({ 
+export default function EmptyState({
   icon = 'folder',
   title = 'No data found',
   description = 'Get started by adding your first item',
@@ -21,11 +21,11 @@ export default function EmptyState({
   const IconComponent = iconMap[icon] || FolderOpenIcon;
 
   return (
-    <Box 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'center',
         py: 8,
         px: 4,
@@ -33,14 +33,14 @@ export default function EmptyState({
         ...sx
       }}
     >
-      <SvgIcon 
-        component={IconComponent} 
-        sx={{ 
-          fontSize: 64, 
-          color: 'text.secondary', 
+      <SvgIcon
+        component={IconComponent}
+        sx={{
+          fontSize: 64,
+          color: 'text.secondary',
           mb: 2,
           opacity: 0.5
-        }} 
+        }}
       />
       <Typography variant="h6" color="text.secondary" gutterBottom>
         {title}

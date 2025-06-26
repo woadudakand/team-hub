@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, TablePagination, 
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox, TablePagination,
   Box, IconButton, TextField, InputAdornment, Skeleton, Typography, Chip, Button, Toolbar
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 
 export default function ReusableTable({
-  columns, rows, selected, onSelectAll, onSelectRow, onDeleteSelected, page, rowsPerPage, total, 
+  columns, rows, selected, onSelectAll, onSelectRow, onDeleteSelected, page, rowsPerPage, total,
   onPageChange, onRowsPerPageChange, onSearch, searchValue, actions, loading, multiActionLabel, onMultiAction
 }) {
   const SkeletonRows = () => (
@@ -60,10 +60,10 @@ export default function ReusableTable({
           />
           {selected.length > 0 && (
             <>
-              <Chip 
-                label={`${selected.length} selected`} 
-                size="small" 
-                color="primary" 
+              <Chip
+                label={`${selected.length} selected`}
+                size="small"
+                color="primary"
                 variant="outlined"
               />
               {multiActionLabel && onMultiAction && (
@@ -127,8 +127,8 @@ export default function ReusableTable({
               <EmptyState />
             ) : (
               rows.map((row, idx) => (
-                <TableRow 
-                  key={row.id || idx} 
+                <TableRow
+                  key={row.id || idx}
                   selected={selected.includes(row.id)}
                   hover
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

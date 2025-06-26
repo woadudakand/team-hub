@@ -9,17 +9,17 @@ import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts';
 export default function ProjectsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
-  
+
   const handleAdd = () => {
     setEditData(null);
     setModalOpen(true);
   };
-  
+
   const handleEdit = (project) => {
     setEditData(project);
     setModalOpen(true);
   };
-  
+
   const handleFormClose = () => {
     setModalOpen(false);
     setEditData(null);
@@ -36,7 +36,7 @@ export default function ProjectsPage() {
       }
     }
   });
-  
+
   return (
     <Box sx={{ p: 3 }}>
       <AppBreadcrumbs />
@@ -45,9 +45,9 @@ export default function ProjectsPage() {
           <Typography variant="h5" sx={{ flex: 1, fontWeight: 600 }}>
             Projects
           </Typography>
-          <Button 
-            variant="contained" 
-            color="primary" 
+          <Button
+            variant="contained"
+            color="primary"
             onClick={handleAdd}
             startIcon={<AddIcon />}
             sx={{ ml: 2 }}

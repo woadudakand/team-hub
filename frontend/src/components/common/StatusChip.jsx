@@ -16,9 +16,9 @@ const statusColors = {
 
 export default function StatusChip({ status, variant = 'filled', size = 'small' }) {
   if (!status) return null;
-  
-  const statusConfig = statusColors[status.toLowerCase()] || { 
-    color: 'default', 
+
+  const statusConfig = statusColors[status.toLowerCase()] || {
+    color: 'default',
     label: status.charAt(0).toUpperCase() + status.slice(1).replace(/_/g, ' ')
   };
 
@@ -28,7 +28,7 @@ export default function StatusChip({ status, variant = 'filled', size = 'small' 
       color={statusConfig.color}
       variant={variant}
       size={size}
-      sx={{ 
+      sx={{
         fontWeight: 500,
         textTransform: 'capitalize'
       }}

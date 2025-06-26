@@ -55,7 +55,7 @@ export default function ProjectViewPage() {
       </Box>
     );
   }
-  
+
   if (error) {
     return (
       <Box sx={{ p: 3 }}>
@@ -64,7 +64,7 @@ export default function ProjectViewPage() {
       </Box>
     );
   }
-  
+
   if (!project) {
     return (
       <Box sx={{ p: 3 }}>

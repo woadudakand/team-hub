@@ -128,9 +128,9 @@ export default function ProjectTable({ onEdit }) {
         actions={row => (
           <Box sx={{ display: 'flex', gap: 0.5 }}>
             <Tooltip title="View">
-              <IconButton 
-                size="small" 
-                component={Link} 
+              <IconButton
+                size="small"
+                component={Link}
                 to={`/projects/${row.id}`}
                 sx={{ color: 'primary.main' }}
               >
@@ -138,8 +138,8 @@ export default function ProjectTable({ onEdit }) {
               </IconButton>
             </Tooltip>
             <Tooltip title="Edit">
-              <IconButton 
-                size="small" 
+              <IconButton
+                size="small"
                 onClick={() => onEdit(row)}
                 sx={{ color: 'info.main' }}
               >
@@ -147,9 +147,9 @@ export default function ProjectTable({ onEdit }) {
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton 
-                size="small" 
-                color="error" 
+              <IconButton
+                size="small"
+                color="error"
                 onClick={() => handleDeleteProject(row)}
               >
                 <DeleteIcon fontSize="small" />

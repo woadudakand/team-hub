@@ -35,7 +35,7 @@ export default function ProjectForm({ open, onClose, editData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim()) return;
-    
+
     setLoading(true);
     try {
       if (editData) {
@@ -72,7 +72,7 @@ export default function ProjectForm({ open, onClose, editData }) {
             autoFocus
             error={!name.trim() && name.length > 0}
             helperText={!name.trim() && name.length > 0 ? 'Project name is required' : ''}
-            inputProps={{ 
+            inputProps={{
               'aria-label': 'Project name',
               maxLength: 100
             }}
@@ -85,7 +85,7 @@ export default function ProjectForm({ open, onClose, editData }) {
             margin="normal"
             multiline
             rows={3}
-            inputProps={{ 
+            inputProps={{
               'aria-label': 'Project description',
               maxLength: 500
             }}
@@ -112,9 +112,9 @@ export default function ProjectForm({ open, onClose, editData }) {
           <Button onClick={() => onClose(false)} disabled={loading}>
             Cancel
           </Button>
-          <Button 
-            type="submit" 
-            variant="contained" 
+          <Button
+            type="submit"
+            variant="contained"
             disabled={loading || !name.trim()}
             startIcon={loading ? <CircularProgress size={20} /> : undefined}
           >

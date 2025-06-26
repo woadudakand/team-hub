@@ -34,9 +34,9 @@ export default function KanbanBoard({ projectId }) {
       setLoading(false);
     }
   }, [projectId]);
-  
-  useEffect(() => { 
-    fetchData(); 
+
+  useEffect(() => {
+    fetchData();
   }, [fetchData]);
 
   const handleAdd = async (status) => {
@@ -116,7 +116,7 @@ export default function KanbanBoard({ projectId }) {
   );
 
   if (!projectId) return <Alert severity="warning">No project selected.</Alert>;
-  
+
   if (loading) {
     return (
       <Box display="flex" gap={2}>
@@ -126,7 +126,7 @@ export default function KanbanBoard({ projectId }) {
       </Box>
     );
   }
-  
+
   if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
@@ -137,12 +137,12 @@ export default function KanbanBoard({ projectId }) {
           return (
             <Droppable droppableId={col.key} key={col.key}>
               {(provided, snapshot) => (
-                <Card 
-                  ref={provided.innerRef} 
-                  {...provided.droppableProps} 
-                  sx={{ 
-                    minWidth: 300, 
-                    flex: 1, 
+                <Card
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  sx={{
+                    minWidth: 300,
+                    flex: 1,
                     backgroundColor: snapshot.isDraggingOver ? 'action.hover' : 'background.paper',
                     transition: 'background-color 0.2s ease'
                   }}
@@ -154,17 +154,17 @@ export default function KanbanBoard({ projectId }) {
                       </Typography>
                       <Chip label={columnTasks.length} size="small" variant="outlined" />
                     </Box>
-                    
+
                     <Box sx={{ minHeight: 200 }}>
                       {columnTasks.map((task, idx) => (
                         <Draggable draggableId={task.id.toString()} index={idx} key={task.id}>
                           {(provided, snapshot) => (
-                            <Card 
-                              ref={provided.innerRef} 
-                              {...provided.draggableProps} 
-                              {...provided.dragHandleProps} 
-                              sx={{ 
-                                mb: 1, 
+                            <Card
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              sx={{
+                                mb: 1,
                                 p: 2,
                                 cursor: 'grab',
                                 backgroundColor: snapshot.isDragging ? 'action.selected' : 'background.default',
@@ -178,9 +178,9 @@ export default function KanbanBoard({ projectId }) {
                               </Typography>
                               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <StatusChip status={task.status} size="small" variant="outlined" />
-                                <IconButton 
-                                  size="small" 
-                                  color="error" 
+                                <IconButton
+                                  size="small"
+                                  color="error"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleDelete(task.id);
@@ -196,18 +196,18 @@ export default function KanbanBoard({ projectId }) {
                       ))}
                       {provided.placeholder}
                     </Box>
-                    
+
                     <Box mt={2} display="flex" gap={1}>
-                      <TextField 
-                        size="small" 
-                        label="New Task" 
-                        value={newTasks[col.key]} 
+                      <TextField
+                        size="small"
+                        label="New Task"
+                        value={newTasks[col.key]}
                         onChange={e => setNewTasks(prev => ({ ...prev, [col.key]: e.target.value }))}
                         onKeyPress={e => e.key === 'Enter' && handleAdd(col.key)}
                         fullWidth
                       />
-                      <Button 
-                        variant="contained" 
+                      <Button
+                        variant="contained"
                         onClick={() => handleAdd(col.key)}
                         disabled={actionLoading || !newTasks[col.key]}
                         startIcon={actionLoading ? <CircularProgress size={16} /> : <AddIcon />}

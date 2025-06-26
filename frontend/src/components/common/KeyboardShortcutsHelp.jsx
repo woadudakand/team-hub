@@ -36,9 +36,9 @@ function ShortcutRow({ shortcut }) {
             label={key}
             size="small"
             variant="outlined"
-            sx={{ 
-              minWidth: 32, 
-              height: 24, 
+            sx={{
+              minWidth: 32,
+              height: 24,
               fontSize: '0.75rem',
               fontFamily: 'monospace'
             }}
@@ -72,8 +72,8 @@ export default function KeyboardShortcutsHelp() {
         <KeyboardIcon />
       </Fab>
 
-      <Dialog 
-        open={open} 
+      <Dialog
+        open={open}
         onClose={() => setOpen(false)}
         maxWidth="sm"
         fullWidth

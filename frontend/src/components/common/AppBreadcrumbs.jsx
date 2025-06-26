@@ -27,8 +27,8 @@ export default function AppBreadcrumbs({ customBreadcrumbs = [] }) {
           <Link
             component={RouterLink}
             to="/dashboard"
-            sx={{ 
-              display: 'flex', 
+            sx={{
+              display: 'flex',
               alignItems: 'center',
               textDecoration: 'none',
               color: 'text.secondary',
@@ -48,7 +48,7 @@ export default function AppBreadcrumbs({ customBreadcrumbs = [] }) {
                 key={crumb.label}
                 component={RouterLink}
                 to={crumb.path}
-                sx={{ 
+                sx={{
                   textDecoration: 'none',
                   color: 'text.secondary',
                   '&:hover': { color: 'primary.main' }
@@ -70,8 +70,8 @@ export default function AppBreadcrumbs({ customBreadcrumbs = [] }) {
         <Link
           component={RouterLink}
           to="/dashboard"
-          sx={{ 
-            display: 'flex', 
+          sx={{
+            display: 'flex',
             alignItems: 'center',
             textDecoration: 'none',
             color: 'text.secondary',
@@ -95,7 +95,7 @@ export default function AppBreadcrumbs({ customBreadcrumbs = [] }) {
               key={to}
               component={RouterLink}
               to={to}
-              sx={{ 
+              sx={{
                 textDecoration: 'none',
                 color: 'text.secondary',
                 '&:hover': { color: 'primary.main' }

@@ -11,7 +11,7 @@ export function TableSkeleton({ rows = 5, columns = 4 }) {
         <Box sx={{ flexGrow: 1 }} />
         <Skeleton variant="rectangular" width={300} height={40} />
       </Box>
-      
+
       {/* Table rows skeleton */}
       {Array.from({ length: rows }).map((_, index) => (
         <Box key={index} sx={{ display: 'flex', gap: 2, p: 2, alignItems: 'center' }}>

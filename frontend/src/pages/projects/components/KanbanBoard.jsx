@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { fetchTasks, createTask, updateTask, deleteTask } from '../../../utility/taskService';
-import { Box, Typography, Button, TextField, Paper, IconButton, CircularProgress, Alert } from '@mui/material';
+import { Box, Typography, Button, TextField, Paper, IconButton, CircularProgress, Alert, Card, CardContent, Skeleton, Chip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { useNotification } from '../../../hooks/useNotification';
+import StatusChip from '../../../components/common/StatusChip';
 
 const columns = [
   { key: 'todo', label: 'To Do' },
@@ -12,11 +15,13 @@ const columns = [
 
 export default function KanbanBoard({ projectId }) {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
+  const [newTasks, setNewTasks] = useState({ todo: '', in_progress: '', done: '' });
   const [loading, setLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { success, error: notifyError } = useNotification();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     if (!projectId) return;
     setLoading(true);
     setError(null);
@@ -28,45 +33,52 @@ export default function KanbanBoard({ projectId }) {
     } finally {
       setLoading(false);
     }
-  };
-  useEffect(() => { fetchData(); }, [projectId]);
+  }, [projectId]);
+  
+  useEffect(() => { 
+    fetchData(); 
+  }, [fetchData]);
 
   const handleAdd = async (status) => {
-    if (!newTask) return;
-    setLoading(true);
+    const taskTitle = newTasks[status];
+    if (!taskTitle) return;
+    setActionLoading(true);
     setError(null);
     try {
-      await createTask(projectId, { title: newTask, status });
-      setNewTask('');
+      await createTask(projectId, { title: taskTitle, status });
+      setNewTasks(prev => ({ ...prev, [status]: '' }));
+      success('Task added successfully');
       fetchData();
     } catch (err) {
-      setError(err?.message || 'Failed to add task');
+      notifyError(err?.message || 'Failed to add task');
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
   const handleDelete = async (id) => {
-    setLoading(true);
+    setActionLoading(true);
     setError(null);
     try {
       await deleteTask(id);
+      success('Task deleted successfully');
       fetchData();
     } catch (err) {
-      setError(err?.message || 'Failed to delete task');
+      notifyError(err?.message || 'Failed to delete task');
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
   const handleStatusChange = async (task, newStatus) => {
-    setLoading(true);
+    setActionLoading(true);
     setError(null);
     try {
       await updateTask(task.id, { ...task, status: newStatus });
+      success(`Task moved to ${newStatus.replace('_', ' ')}`);
       fetchData();
     } catch (err) {
-      setError(err?.message || 'Failed to update task');
+      notifyError(err?.message || 'Failed to update task');
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
 
@@ -78,54 +90,138 @@ export default function KanbanBoard({ projectId }) {
     const task = tasks.find(t => t.id.toString() === draggableId);
     if (!task) return;
     const newStatus = destination.droppableId;
-    setLoading(true);
+    setActionLoading(true);
     setError(null);
     try {
       await updateTask(task.id, { ...task, status: newStatus });
+      success(`Task moved to ${newStatus.replace('_', ' ')}`);
       fetchData();
     } catch (err) {
-      setError(err?.message || 'Failed to move task');
+      notifyError(err?.message || 'Failed to move task');
     } finally {
-      setLoading(false);
+      setActionLoading(false);
     }
   };
 
+  const SkeletonColumn = () => (
+    <Paper sx={{ flex: 1, p: 2, minHeight: 300 }}>
+      <Skeleton variant="text" width="60%" height={32} sx={{ mb: 2 }} />
+      {Array.from({ length: 3 }).map((_, idx) => (
+        <Card key={idx} sx={{ mb: 1, p: 1 }}>
+          <Skeleton variant="text" width="80%" />
+          <Skeleton variant="text" width="40%" />
+        </Card>
+      ))}
+    </Paper>
+  );
+
   if (!projectId) return <Alert severity="warning">No project selected.</Alert>;
-  if (loading) return <Box display="flex" justifyContent="center" alignItems="center" minHeight={200}><CircularProgress /></Box>;
+  
+  if (loading) {
+    return (
+      <Box display="flex" gap={2}>
+        {columns.map((col, idx) => (
+          <SkeletonColumn key={idx} />
+        ))}
+      </Box>
+    );
+  }
+  
   if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Box display="flex" gap={2}>
-        {columns.map(col => (
-          <Droppable droppableId={col.key} key={col.key}>
-            {(provided) => (
-              <Paper ref={provided.innerRef} {...provided.droppableProps} sx={{ flex: 1, p: 2, minHeight: 300 }}>
-                <Typography variant="h6" mb={2}>{col.label}</Typography>
-                {tasks.filter(t => t.status === col.key).map((task, idx) => (
-                  <Draggable draggableId={task.id.toString()} index={idx} key={task.id}>
-                    {(provided) => (
-                      <Paper ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} sx={{ p: 1, mb: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span>{task.title}</span>
-                        <Box>
-                          {columns.filter(c => c.key !== col.key).map(c => (
-                            <Button key={c.key} size="small" onClick={() => handleStatusChange(task, c.key)}>{c.label}</Button>
-                          ))}
-                          <IconButton size="small" color="error" onClick={() => handleDelete(task.id)}><DeleteIcon /></IconButton>
-                        </Box>
-                      </Paper>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-                <Box mt={2} display="flex" gap={1}>
-                  <TextField size="small" label="New Task" value={newTask} onChange={e => setNewTask(e.target.value)} />
-                  <Button variant="contained" onClick={() => handleAdd(col.key)}>Add</Button>
-                </Box>
-              </Paper>
-            )}
-          </Droppable>
-        ))}
+      <Box display="flex" gap={2} sx={{ overflowX: 'auto', pb: 2 }}>
+        {columns.map(col => {
+          const columnTasks = tasks.filter(t => t.status === col.key);
+          return (
+            <Droppable droppableId={col.key} key={col.key}>
+              {(provided, snapshot) => (
+                <Card 
+                  ref={provided.innerRef} 
+                  {...provided.droppableProps} 
+                  sx={{ 
+                    minWidth: 300, 
+                    flex: 1, 
+                    backgroundColor: snapshot.isDraggingOver ? 'action.hover' : 'background.paper',
+                    transition: 'background-color 0.2s ease'
+                  }}
+                >
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        {col.label}
+                      </Typography>
+                      <Chip label={columnTasks.length} size="small" variant="outlined" />
+                    </Box>
+                    
+                    <Box sx={{ minHeight: 200 }}>
+                      {columnTasks.map((task, idx) => (
+                        <Draggable draggableId={task.id.toString()} index={idx} key={task.id}>
+                          {(provided, snapshot) => (
+                            <Card 
+                              ref={provided.innerRef} 
+                              {...provided.draggableProps} 
+                              {...provided.dragHandleProps} 
+                              sx={{ 
+                                mb: 1, 
+                                p: 2,
+                                cursor: 'grab',
+                                backgroundColor: snapshot.isDragging ? 'action.selected' : 'background.default',
+                                boxShadow: snapshot.isDragging ? 3 : 1,
+                                '&:hover': { boxShadow: 2 },
+                                transition: 'all 0.2s ease'
+                              }}
+                            >
+                              <Typography variant="body2" sx={{ fontWeight: 500, mb: 1 }}>
+                                {task.title}
+                              </Typography>
+                              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <StatusChip status={task.status} size="small" variant="outlined" />
+                                <IconButton 
+                                  size="small" 
+                                  color="error" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDelete(task.id);
+                                  }}
+                                  disabled={actionLoading}
+                                >
+                                  <DeleteIcon fontSize="small" />
+                                </IconButton>
+                              </Box>
+                            </Card>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </Box>
+                    
+                    <Box mt={2} display="flex" gap={1}>
+                      <TextField 
+                        size="small" 
+                        label="New Task" 
+                        value={newTasks[col.key]} 
+                        onChange={e => setNewTasks(prev => ({ ...prev, [col.key]: e.target.value }))}
+                        onKeyPress={e => e.key === 'Enter' && handleAdd(col.key)}
+                        fullWidth
+                      />
+                      <Button 
+                        variant="contained" 
+                        onClick={() => handleAdd(col.key)}
+                        disabled={actionLoading || !newTasks[col.key]}
+                        startIcon={actionLoading ? <CircularProgress size={16} /> : <AddIcon />}
+                        size="small"
+                      >
+                        Add
+                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              )}
+            </Droppable>
+          );
+        })}
       </Box>
     </DragDropContext>
   );

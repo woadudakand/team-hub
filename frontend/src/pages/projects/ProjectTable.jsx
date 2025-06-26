@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import ReusableTable from '../../components/common/ReusableTable';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
+import StatusChip from '../../components/common/StatusChip';
 import { fetchProjects, deleteProject } from '../../utility/projectService';
-import { Button, Card, CardContent, Divider, Typography, Box, Link as MuiLink, IconButton, Tooltip } from '@mui/material';
+import { Box, Link as MuiLink, IconButton, Tooltip, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNotification } from '../../hooks/useNotification';
 
 export default function ProjectTable({ onEdit }) {
   const [projects, setProjects] = useState([]);
@@ -19,14 +21,23 @@ export default function ProjectTable({ onEdit }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmMultiOpen, setConfirmMultiOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
+  const { success, error } = useNotification();
 
   const columns = [
     { key: 'sl', label: 'SL' },
     { key: 'name', label: 'Name', render: (row) => (
-      <MuiLink component={Link} to={`/projects/${row.id}`} underline="hover">{row.name}</MuiLink>
+      <MuiLink component={Link} to={`/projects/${row.id}`} underline="hover" sx={{ fontWeight: 500 }}>
+        {row.name}
+      </MuiLink>
     ) },
-    { key: 'description', label: 'Description' },
-    { key: 'status', label: 'Status' },
+    { key: 'description', label: 'Description', render: (row) => (
+      <Box sx={{ maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {row.description || '-'}
+      </Box>
+    ) },
+    { key: 'status', label: 'Status', render: (row) => (
+      <StatusChip status={row.status} />
+    ) },
   ];
   const rows = projects.map((project, idx) => ({ ...project, sl: page * rowsPerPage + idx + 1 }));
 
@@ -57,10 +68,15 @@ export default function ProjectTable({ onEdit }) {
   };
   const handleConfirmMultiDelete = async () => {
     if (selected.length > 0) {
-      await Promise.all(selected.map(id => deleteProject(id)));
-      setSelected([]);
-      setConfirmMultiOpen(false);
-      fetchData();
+      try {
+        await Promise.all(selected.map(id => deleteProject(id)));
+        success(`Successfully deleted ${selected.length} project(s)`);
+        setSelected([]);
+        setConfirmMultiOpen(false);
+        fetchData();
+      } catch {
+        error('Failed to delete selected projects');
+      }
     } else {
       setConfirmMultiOpen(false);
     }
@@ -71,10 +87,15 @@ export default function ProjectTable({ onEdit }) {
   };
   const handleConfirmDelete = async () => {
     if (projectToDelete) {
-      await deleteProject(projectToDelete.id);
-      setProjectToDelete(null);
-      setConfirmOpen(false);
-      fetchData();
+      try {
+        await deleteProject(projectToDelete.id);
+        success(`Successfully deleted project "${projectToDelete.name}"`);
+        setProjectToDelete(null);
+        setConfirmOpen(false);
+        fetchData();
+      } catch {
+        error('Failed to delete project');
+      }
     }
   };
   const handleCancelDelete = () => {
@@ -89,39 +110,57 @@ export default function ProjectTable({ onEdit }) {
   const handleSearch = (val) => { setSearch(val); setPage(0); };
 
   return (
-    <Card>
-      <Box display="flex" alignItems="center" justifyContent="space-between" px={2} py={2}>
-        <Typography variant="h6">Project Management</Typography>
-        {/* Add button can be placed here if needed */}
-      </Box>
-      <Divider />
-      <CardContent>
-        <ReusableTable
-          columns={columns}
-          rows={rows}
-          selected={selected}
-          onSelectAll={handleSelectAll}
-          onSelectRow={handleSelectRow}
-          onDeleteSelected={handleDeleteSelected}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          total={total}
-          onPageChange={handlePageChange}
-          onRowsPerPageChange={handleRowsPerPageChange}
-          onSearch={handleSearch}
-          searchValue={search}
-          actions={row => (
-            <>
-              <Tooltip title="View"><IconButton size="small" component={Link} to={`/projects/${row.id}`}><VisibilityIcon /></IconButton></Tooltip>
-              <Tooltip title="Edit"><IconButton size="small" onClick={() => onEdit(row)}><EditIcon /></IconButton></Tooltip>
-              <Tooltip title="Delete"><IconButton size="small" color="error" onClick={() => handleDeleteProject(row)}><DeleteIcon /></IconButton></Tooltip>
-            </>
-          )}
-          loading={loading}
-          multiActionLabel={selected.length > 0 ? 'Delete Selected' : undefined}
-          onMultiAction={handleDeleteSelected}
-        />
-      </CardContent>
+    <Box>
+      <ReusableTable
+        columns={columns}
+        rows={rows}
+        selected={selected}
+        onSelectAll={handleSelectAll}
+        onSelectRow={handleSelectRow}
+        onDeleteSelected={handleDeleteSelected}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        total={total}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
+        onSearch={handleSearch}
+        searchValue={search}
+        actions={row => (
+          <Box sx={{ display: 'flex', gap: 0.5 }}>
+            <Tooltip title="View">
+              <IconButton 
+                size="small" 
+                component={Link} 
+                to={`/projects/${row.id}`}
+                sx={{ color: 'primary.main' }}
+              >
+                <VisibilityIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Edit">
+              <IconButton 
+                size="small" 
+                onClick={() => onEdit(row)}
+                sx={{ color: 'info.main' }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton 
+                size="small" 
+                color="error" 
+                onClick={() => handleDeleteProject(row)}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        )}
+        loading={loading}
+        multiActionLabel={selected.length > 0 ? 'Delete Selected' : undefined}
+        onMultiAction={handleDeleteSelected}
+      />
       <ConfirmDialog
         open={confirmOpen}
         title="Delete Project"
@@ -140,6 +179,6 @@ export default function ProjectTable({ onEdit }) {
         confirmLabel="Delete"
         cancelLabel="Cancel"
       />
-    </Card>
+    </Box>
   );
 }

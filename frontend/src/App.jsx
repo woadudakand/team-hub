@@ -28,6 +28,7 @@ import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 import ProjectsPage from './pages/projects/ProjectsPage';
 import ProjectViewPage from './pages/projects/ProjectViewPage';
 import ProjectStatusSettings from './pages/settings/ProjectStatusSettings';
+import NotificationProvider from './components/common/NotificationProvider';
 
 function PrivateRoute({ children }) {
   const token = useSelector((state) => state.auth.token)
@@ -103,7 +104,9 @@ function App() {
 export default function AppWithProvider() {
   return (
     <Provider store={store}>
-      <App />
+      <NotificationProvider>
+        <App />
+      </NotificationProvider>
     </Provider>
   );
 }

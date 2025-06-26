@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem } from '@mui/material';
+import { Box, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, CircularProgress } from '@mui/material';
 import { createProject, updateProject } from '../../utility/projectService';
 import { fetchProjectStatuses } from '../../utility/projectStatusService';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from '../../hooks/useNotification';
 
 export default function ProjectForm({ open, onClose, editData }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('active');
   const [statusOptions, setStatusOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { success, error } = useNotification();
 
   useEffect(() => {
     if (editData) {
@@ -31,15 +34,26 @@ export default function ProjectForm({ open, onClose, editData }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (editData) {
-      await updateProject(editData.id, { name, description, status });
-      onClose(true);
-    } else {
-      const created = await createProject({ name, description, status });
-      onClose(false); // close modal
-      if (created && created.id) {
-        navigate(`/projects/${created.id}`); // go to new project page
+    if (!name.trim()) return;
+    
+    setLoading(true);
+    try {
+      if (editData) {
+        await updateProject(editData.id, { name, description, status });
+        success('Project updated successfully');
+        onClose(true);
+      } else {
+        const created = await createProject({ name, description, status });
+        success('Project created successfully');
+        onClose(false); // close modal
+        if (created && created.id) {
+          navigate(`/projects/${created.id}`); // go to new project page
+        }
       }
+    } catch {
+      error('Failed to save project');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,8 +91,17 @@ export default function ProjectForm({ open, onClose, editData }) {
           </TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => onClose(false)}>Cancel</Button>
-          <Button type="submit" variant="contained">Save</Button>
+          <Button onClick={() => onClose(false)} disabled={loading}>
+            Cancel
+          </Button>
+          <Button 
+            type="submit" 
+            variant="contained" 
+            disabled={loading || !name.trim()}
+            startIcon={loading ? <CircularProgress size={20} /> : undefined}
+          >
+            {loading ? 'Saving...' : 'Save'}
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

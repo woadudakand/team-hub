@@ -4,7 +4,8 @@ import ProjectDetails from './components/ProjectDetails';
 import ProjectTeam from './components/ProjectTeam';
 import KanbanBoard from './components/KanbanBoard';
 import { fetchProjects } from '../../utility/projectService';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, CircularProgress, Alert } from '@mui/material';
+import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 
 // Try to fetch a single project by ID, fallback to fetch all if not available
 async function fetchProjectById(projectId) {
@@ -36,12 +37,46 @@ export default function ProjectViewPage() {
       .finally(() => setLoading(false));
   }, [projectId]);
 
-  if (loading) return <Typography>Loading project...</Typography>;
-  if (error) return <Typography color="error">{error}</Typography>;
-  if (!project) return <Typography>Project not found.</Typography>;
+  const breadcrumbs = project ? [
+    { label: 'Projects', path: '/projects' },
+    { label: project.name, path: `/projects/${project.id}` }
+  ] : [
+    { label: 'Projects', path: '/projects' },
+    { label: 'Loading...', path: '#' }
+  ];
+
+  if (loading) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <AppBreadcrumbs customBreadcrumbs={breadcrumbs} />
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 200 }}>
+          <CircularProgress />
+        </Box>
+      </Box>
+    );
+  }
+  
+  if (error) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <AppBreadcrumbs customBreadcrumbs={breadcrumbs} />
+        <Alert severity="error">{error}</Alert>
+      </Box>
+    );
+  }
+  
+  if (!project) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <AppBreadcrumbs customBreadcrumbs={breadcrumbs} />
+        <Alert severity="warning">Project not found.</Alert>
+      </Box>
+    );
+  }
 
   return (
-    <Box p={3}>
+    <Box sx={{ p: 3 }}>
+      <AppBreadcrumbs customBreadcrumbs={breadcrumbs} />
       <ProjectDetails project={project} />
       <ProjectTeam projectId={project.id} />
       <KanbanBoard projectId={project.id} />

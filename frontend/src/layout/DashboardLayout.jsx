@@ -4,16 +4,27 @@ import SideMenu from './SideMenu';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ThemeModeDirectionSync from '../features/theme/ThemeModeDirectionSync';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import KeyboardShortcutsHelp from '../components/common/KeyboardShortcutsHelp';
+import useKeyboardShortcuts from '../hooks/useKeyboardShortcuts';
 
-export default function DashboardLayout({ children, onSignout }) {
+export default function DashboardLayout({ onSignout }) {
   const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
 
   const [darkMode, setDarkMode] = React.useState(false);
   const [direction, setDirection] = React.useState('ltr');
   const [sideOpen, setSideOpen] = React.useState(true);
   const [menuPosition, setMenuPosition] = React.useState('side'); // 'side' or 'top'
+
+  // Global keyboard shortcuts
+  useKeyboardShortcuts({
+    'g+d': () => navigate('/dashboard'),
+    'g+p': () => navigate('/projects'),
+    'g+s': () => navigate('/settings'),
+    'g+a': () => navigate('/announcements'),
+  });
 
   const theme = React.useMemo(() => createTheme({
     direction,
@@ -49,6 +60,7 @@ export default function DashboardLayout({ children, onSignout }) {
         {/* Render nested route content here */}
         <Outlet />
       </Box>
+      <KeyboardShortcutsHelp />
     </ThemeProvider>
   );
 }

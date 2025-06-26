@@ -4,6 +4,7 @@ import ProjectTable from './ProjectTable';
 import ProjectForm from './ProjectForm';
 import AppBreadcrumbs from '../../components/common/AppBreadcrumbs';
 import AddIcon from '@mui/icons-material/Add';
+import useKeyboardShortcuts from '../../hooks/useKeyboardShortcuts';
 
 export default function ProjectsPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -24,6 +25,17 @@ export default function ProjectsPage() {
     setEditData(null);
     // Remove the reload, let the table handle refresh internally
   };
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts({
+    'ctrl+n': handleAdd,
+    'meta+n': handleAdd, // For Mac
+    'escape': () => {
+      if (modalOpen) {
+        handleFormClose();
+      }
+    }
+  });
   
   return (
     <Box sx={{ p: 3 }}>

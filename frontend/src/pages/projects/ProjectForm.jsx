@@ -69,6 +69,13 @@ export default function ProjectForm({ open, onClose, editData }) {
             fullWidth
             required
             margin="normal"
+            autoFocus
+            error={!name.trim() && name.length > 0}
+            helperText={!name.trim() && name.length > 0 ? 'Project name is required' : ''}
+            inputProps={{ 
+              'aria-label': 'Project name',
+              maxLength: 100
+            }}
           />
           <TextField
             label="Description"
@@ -76,6 +83,13 @@ export default function ProjectForm({ open, onClose, editData }) {
             onChange={e => setDescription(e.target.value)}
             fullWidth
             margin="normal"
+            multiline
+            rows={3}
+            inputProps={{ 
+              'aria-label': 'Project description',
+              maxLength: 500
+            }}
+            helperText={`${description.length}/500 characters`}
           />
           <TextField
             select
@@ -84,9 +98,13 @@ export default function ProjectForm({ open, onClose, editData }) {
             onChange={e => setStatus(e.target.value)}
             fullWidth
             margin="normal"
+            required
+            inputProps={{ 'aria-label': 'Project status' }}
           >
             {statusOptions.map(opt => (
-              <MenuItem key={opt.status} value={opt.status}>{opt.status}</MenuItem>
+              <MenuItem key={opt.status} value={opt.status}>
+                {opt.status.charAt(0).toUpperCase() + opt.status.slice(1).replace(/_/g, ' ')}
+              </MenuItem>
             ))}
           </TextField>
         </DialogContent>
